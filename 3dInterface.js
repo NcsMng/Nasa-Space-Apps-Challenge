@@ -1,18 +1,11 @@
 var textureNames = ["earth", "sun", "moon", "venus", "mercury", "mars", "jupiter", "saturn", "smokeparticle"];
 var textures = {};
 var graphicFunctions;
-<<<<<<< Updated upstream
-function startRendering(args) {
-	var settings;
-	var tailPoints, _3DObjectsEvents = {};
-	var scene, camera, renderer, controls, sceneCenterSphere;
-=======
 
 function startRendering(element, args) {
 	var settings;
 	var tailPoints, _3DObjectsEvents = {};
 	var scene, camera, renderer, controls, sceneCenterSphere, models = [], objects = [], controlMode, skyBox;
->>>>>>> Stashed changes
 	
 	function main() {
 		settings = getArgsOrDefault({
@@ -102,12 +95,6 @@ function startRendering(element, args) {
 	
 	function animate() {
 		requestAnimationFrame(animate);
-<<<<<<< Updated upstream
-		controls.update();
-		sceneCenterSphere.position.set(controls.target.x, controls.target.y, controls.target.z);
-		var rateo = controls.target.distanceTo(controls.object.position) / 5;
-		sceneCenterSphere.scale.set(rateo, rateo, rateo);
-=======
 		if (controlMode == 0) {
 			var dist = controls.target.distanceTo(controls.object.position);
 			if (sceneCenterSphere != null) {
@@ -122,15 +109,10 @@ function startRendering(element, args) {
 			}*/
 			controls.update();
 		}
->>>>>>> Stashed changes
 		renderer.render(scene, camera);
 	}
 	
 	function startNavigationMode() {
-<<<<<<< Updated upstream
-		if (controls != null)
-			controls.dispose();
-=======
 		controlMode = 0;
 		if (controls != null)
 			controls.dispose();
@@ -139,7 +121,6 @@ function startRendering(element, args) {
 			objects[i].y = models[i].position.y;
 			objects[i].z = models[i].position.z;
 		}
->>>>>>> Stashed changes
 		controls = new THREE.TrackballControls(camera);
 		controls.rotateSpeed = 5;
 		controls.zoomSpeed = 5;
@@ -155,12 +136,8 @@ function startRendering(element, args) {
 	function startEditingMode() {
 		if (controls != null)
 			controls.dispose();
-<<<<<<< Updated upstream
-		
-=======
 		controlMode = 1;
 		controls = new THREE.DragControls(models, camera, renderer.domElement);
->>>>>>> Stashed changes
 	}
 	
 	function addAxes() {
@@ -231,8 +208,14 @@ function startRendering(element, args) {
 						onComplete();
 				});
 		}
-		function setMode() {
-			
+		function setMode(mode) {
+			if (mode == 0){
+				startNavigationMode();
+			}
+			else if (mode == 1){
+				startEditingMode();
+			}
+
 		}
 		function createTail(x, y, z) {
 			var tailPoints = settings.tailPoints;
