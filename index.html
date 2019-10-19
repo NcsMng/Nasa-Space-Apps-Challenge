@@ -21,21 +21,22 @@
 		<script src="3dLib/js/three.js"></script>
 		<script src="3dLib/loaders/GLTFLoader.js"></script>
 		<script src="3dLib/controls/TrackballControls.js"></script>
+		<script src=" 3dLib/controls/DragControls.js"></script>
 		<script src="3dInterface.js"></script>
 		<script src="gravityEngine.js"></script>
 		<script>
 			var graphicFunctions;
-			var gavityFunctions;//PAOLO
+			var gravityFunctions;//PAOLO
 			function onLoad() {
 				graphicFunctions = startRendering({tailPoints: 1000});
-				gavityFunctions = initGravity();
+				gravityFunctions = initGravity();
 				graphicFunctions.loadTextures(textureNames, function() {
-					gavityFunctions.addObject(textures.saturn, 2, 100, 0, 100, 0, 40, 0, 0);
-					gavityFunctions.addObject(textures.earth, 2, 100, 0, 150, 0, 40, 0, 0);
-					gavityFunctions.addObject(textures.mars, 2, 100, 0, 200, 0, 40, 0, 0);
-					gavityFunctions.addObject(textures.neptune, 2, 100, 0, 250, 0, 30, 0, 0);
-					gavityFunctions.addObject(textures.sun, 12, 600000, 0, 0, 0, 0, 0, 0);
-					gavityFunctions.turnOnGravity();
+					gravityFunctions.addObject(textures.saturn, 2, 100, 0, 100, 0, 40, 0, 0);
+					gravityFunctions.addObject(textures.earth, 2, 100, 0, 150, 0, 40, 0, 0);
+					gravityFunctions.addObject(textures.mars, 2, 100, 0, 200, 0, 40, 0, 0);
+					gravityFunctions.addObject(textures.neptune, 2, 100, 0, 250, 0, 30, 0, 0);
+					gravityFunctions.addObject(textures.sun, 12, 600000, 0, 0, 0, 0, 0, 0);
+					gravityFunctions.turnOnGravity();
 				});
 			}
 		</script>

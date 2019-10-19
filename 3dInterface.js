@@ -1,10 +1,11 @@
 var textureNames = ["earth", "sun", "moon", "venus", "mercury", "mars", "jupiter", "saturn"];
 var textures = {};
 var graphicFunctions;
+
 function startRendering(args) {
 	var settings;
 	var tailPoints, _3DObjectsEvents = {};
-	var scene, camera, renderer, controls, sceneCenterSphere;
+	var scene, camera, renderer, controls, sceneCenterSphere, models = [], controlMode;
 	
 	function main() {
 		settings = getArgsOrDefault({
@@ -86,16 +87,20 @@ function startRendering(args) {
 	
 	function animate() {
 		requestAnimationFrame(animate);
-		controls.update();
-		sceneCenterSphere.position.set(controls.target.x, controls.target.y, controls.target.z);
-		var rateo = controls.target.distanceTo(controls.object.position) / 5;
-		sceneCenterSphere.scale.set(rateo, rateo, rateo);
+		if (controlMode == 0) {
+			controls.update();
+			sceneCenterSphere.position.set(controls.target.x, controls.target.y, controls.target.z);
+			var rateo = controls.target.distanceTo(controls.object.position) / 5;
+			sceneCenterSphere.scale.set(rateo, rateo, rateo);
+		}
 		renderer.render(scene, camera);
 	}
 	
 	function startNavigationMode() {
-		if (controls != null)
+		controlMode = 0;
+		if (controls != null){
 			controls.dispose();
+		}
 		controls = new THREE.TrackballControls(camera);
 		controls.rotateSpeed = 5;
 		controls.zoomSpeed = 5;
@@ -107,9 +112,12 @@ function startRendering(args) {
 	}
 	
 	function startEditingMode() {
-		if (controls != null)
+		if (controls != null){
 			controls.dispose();
-		
+		}
+		controlMode = 1;
+		controls = new THREE.DragControls(models, camera, renderer.domElement);
+
 	}
 	
 	function addAxes() {
@@ -136,6 +144,7 @@ function startRendering(args) {
 			scene.add(model);
 			var id = objectId++;
 			model.name = id;
+			models.push(model);	
 			_3DObjectsEvents[id] = {};
 			var tailFunctions;
 			if (settings.showTail)
@@ -177,8 +186,14 @@ function startRendering(args) {
 						onComplete();
 				});
 		}
-		function setMode() {
-			
+		function setMode(mode) {
+			if (mode == 0){
+				startNavigationMode();
+			}
+			else if (mode == 1){
+				startEditingMode();
+			}
+
 		}
 		function createTail(x, y, z) {
 			var tailPoints = settings.tailPoints;
