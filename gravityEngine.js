@@ -6,11 +6,12 @@ function initGravity() {
 	var G = 100;
 	var isComputing = false;
 	var lastObjectInFocus;
-	function manageObject(object, mass, speedX, speedY, speedZ) {
+	function manageObject(object, mass, speedX, speedY, speedZ, onClick) {
 		object.mass = mass;
 		object.speed = {x: speedX, y: speedY, z: speedZ};
 		object.events.onClick = function() {
 			if (!object.cameraFollow) {
+				console.log(onClick);
 				if (onClick != null)
 					onClick(object);
 				turnOffGravity();
@@ -29,17 +30,17 @@ function initGravity() {
 		};
 		return object;
 	}
-	function createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor) {
-		return manageObject(graphicFunctions.addObject(texture, radius, x, y, z, lightSourceColor), mass, speedX, speedY, speedZ);
+	function createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick) {
+		return manageObject(graphicFunctions.addObject(texture, radius, x, y, z, lightSourceColor), mass, speedX, speedY, speedZ, onClick);
 	}
-	function addObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor) {
-		objects.push(createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor));
+	function addObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick) {
+		objects.push(createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick));
 	}
-	function createObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ) {
-		return manageObject(graphicFunctions.addObjectFromModel(objectGenerator, x, y, z), objectGenerator.mass, speedX, speedY, speedZ);
+	function createObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ, onClick) {
+		return manageObject(graphicFunctions.addObjectFromModel(objectGenerator, x, y, z), objectGenerator.mass, speedX, speedY, speedZ, onClick);
 	}
-	function addObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ) {
-		objects.push(createObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ));
+	function addObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ, onClick) {
+		objects.push(createObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ, onClick));
 	}
 	var gravityInterval = null;
 	function toggleGravity() {
