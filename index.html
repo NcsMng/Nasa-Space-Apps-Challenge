@@ -39,9 +39,9 @@
 				graphicFunctions = startRendering(document.getElementById("container"), {tailPoints: 500, showCenterSphere: false});
 				gravityFunctions = initGravity();
 				graphicFunctions.loadTextures(textureNames, function() {
-					gravityFunctions.addObject(textures.saturn, 2, 100, 0, 0, 100, 40, 0, 0, null);
-					gravityFunctions.addObject(textures.earth, 2, 100, 0, 0, 150, 40, 0, 0, null);
-					gravityFunctions.addObject(textures.mars, 2, 100, 0, 0, 200, 40, 0, 0, null);
+					gravityFunctions.addObject(textures.saturn, 2, 100, 0, 0, 100, 70, 0, 0, null);
+					gravityFunctions.addObject(textures.earth, 2, 100, 0, 0, 150, 60, 0, 0, null);
+					gravityFunctions.addObject(textures.mars, 2, 100, 0, 0, 250, 50, 0, 0, null);
 					gravityFunctions.addObject(textures.sun2, 12, 600000, 0, 0, 0, 0, 0, 0, 0xffffff);
 					gravityFunctions.turnOnGravity();
 				});
