@@ -84,11 +84,13 @@
 		<script src="3dLib/loaders/GLTFLoader.js"></script>
 		<script src="3dLib/controls/OrbitControls.js"></script>
 		<script src="3dLib/controls/DragControls.js"></script>
+		<script src="objectGenerators.js"></script>
 		<script src="3dInterface.js"></script>
 		<script src="gravityEngine.js"></script>
 		<script>
 			var graphicFunctions;
 			var gravityFunctions;
+			var objectGenerators;
 			function onLoad() {
 				graphicFunctions = startRendering(document.getElementById("container"), {tailPoints: 500, showCenterSphere: false});
 				gravityFunctions = initGravity();

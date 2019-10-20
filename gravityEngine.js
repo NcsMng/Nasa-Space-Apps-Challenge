@@ -3,11 +3,10 @@ function initGravity() {
 	var perMmotiviDiDebug = 10;
 	var objects = [];
 	var timePerStep = 0.005;
-	var G = 1;
+	var G = 100;
 	var isComputing = false;
 	var lastObjectInFocus;
-	function createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick) {
-		var object = graphicFunctions.addObject(texture, radius, x, y, z, lightSourceColor);
+	function manageObject(object, mass, speedX, speedY, speedZ) {
 		object.mass = mass;
 		object.speed = {x: speedX, y: speedY, z: speedZ};
 		object.events.onClick = function() {
@@ -30,10 +29,17 @@ function initGravity() {
 		};
 		return object;
 	}
-	function addObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick) {
-		var object = createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick);
-		objects.push(object);
-		return object;
+	function createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor) {
+		return manageObject(graphicFunctions.addObject(texture, radius, x, y, z, lightSourceColor), mass, speedX, speedY, speedZ);
+	}
+	function addObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor) {
+		objects.push(createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor));
+	}
+	function createObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ) {
+		return manageObject(graphicFunctions.addObjectFromModel(objectGenerator, x, y, z), objectGenerator.mass, speedX, speedY, speedZ);
+	}
+	function addObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ) {
+		objects.push(createObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ));
 	}
 	var gravityInterval = null;
 	function toggleGravity() {
@@ -128,5 +134,5 @@ function initGravity() {
 		objects = newObjectArray;
 		isComputing = false;
 	}
-	return {createObject, addObject, toggleGravity, turnOnGravity, turnOffGravity};
+	return {createObject, addObject, createObjectFromModel, addObjectFromModel, toggleGravity, turnOnGravity, turnOffGravity};
 }
