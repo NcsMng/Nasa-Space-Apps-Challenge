@@ -86,7 +86,13 @@ function initGravity() {
 									x -= Fh * Math.sqrt(1 - angle2 * angle2);
 							}
 							collisions[j] = null;
-						} else {
+						} else if((d > thisObj.radius || d > objects[j].radius) && !(Math.abs(thisObj.speed.x)<0.001&&Math.abs(thisObj.speed.y)<0.001&&Math.abs(thisObj.speed.z)<0.001)){
+							var maximumCollisionSpeed = 5;
+							thisObj.speed.x *= 0.95;
+							thisObj.speed.y *= 0.95;
+							thisObj.speed.z *= 0.95;
+							collisions[j] = null;
+						}else{
 							if (thisObj.mass > objects[j].mass)
 								collisions[j] = {
 									object1: thisObj,
@@ -116,10 +122,13 @@ function initGravity() {
 				objects[i].moveBy(objects[i].speed.x * timePerStep, objects[i].speed.y * timePerStep, objects[i].speed.z * timePerStep);
 				newObjectArray.push(objects[i]);
 			} else if (collisions[i].index1 == i){
+				var density = collisions[i].object1.mass / (collisions[i].object1.radius*collisions[i].object1.radius*collisions[i].object1.radius*4*Math.PI/3);
+				var finalMass = collisions[i].object1.mass + collisions[i].object2.mass;
+				var finalRadius = Math.cbrt(finalMass*3/(4*density*Math.PI));
 				collisions[i].object1.remove();
 				collisions[i].object2.remove();
 				//TODO: compute radius
-				newObjectArray.push(createObject(collisions[i].object1.texture, collisions[i].object1.radius, collisions[i].object1.mass + collisions[i].object2.mass, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z, collisions[i].object1.lightSourceColor));
+				newObjectArray.push(createObject(collisions[i].object1.texture, finalRadius,finalMass, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z, collisions[i].object1.lightSourceColor));
 			}
 		objects = newObjectArray;
 		isComputing = false;
