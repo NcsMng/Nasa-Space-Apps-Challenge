@@ -112,10 +112,10 @@ function getObjectGenerators() {
 			}
 		},
 		blackhole: {
-			radius: 10,
+			radius: 200,
 			mainTexture: null,
 			lightSourceColor: 0x440000,
-			mass: 9999999,
+			mass: 9999999999,
 			generate: function(model, currentObject, utils) {
 				var material = new THREE.MeshBasicMaterial({color: 0x111111, envMap: SKYBOX, refractionRatio: 0.96});
 				material.envMap.mapping = THREE.CubeRefractionMapping;

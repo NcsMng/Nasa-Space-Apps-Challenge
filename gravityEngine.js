@@ -29,19 +29,35 @@ function initGravity() {
 				});
 			}
 		};
+		object.stopGravity = function(){
+			for(var i = 0; i < objects.length; i++){
+				if(objects[i] === object){
+					objects.splice(i,1);
+					break;
+				}
+			}
+		}
+		object.dispose = function(){
+			object.stopGravity();
+			object.remove();
+		}
 		return object;
 	}
 	function createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick) {
 		return manageObject(graphicFunctions.addObject(texture, radius, x, y, z, lightSourceColor), mass, speedX, speedY, speedZ, onClick);
 	}
 	function addObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick) {
-		objects.push(createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick));
+		var obj = createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick);
+		objects.push(obj);
+		return obj;
 	}
 	function createObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ, onClick) {
 		return manageObject(graphicFunctions.addObjectFromModel(objectGenerator, x, y, z), objectGenerator.mass, speedX, speedY, speedZ, onClick);
 	}
 	function addObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ, onClick) {
-		objects.push(createObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ, onClick));
+		var obj = createObjectFromModel(objectGenerator, x, y, z, speedX, speedY, speedZ, onClick);
+		objects.push(obj);
+		return obj;
 	}
 	var gravityInterval = null;
 	function toggleGravity() {
@@ -99,10 +115,6 @@ function initGravity() {
 							}
 							collisions[j] = null;
 						} else if((d > thisObj.radius || d > objects[j].radius) && !(Math.abs(thisObj.speed.x)<0.001&&Math.abs(thisObj.speed.y)<0.001&&Math.abs(thisObj.speed.z)<0.001)){
-							var maximumCollisionSpeed = 5;
-							thisObj.speed.x *= 0.95;
-							thisObj.speed.y *= 0.95;
-							thisObj.speed.z *= 0.95;
 							collisions[j] = null;
 						}else{
 							if (thisObj.mass > objects[j].mass)

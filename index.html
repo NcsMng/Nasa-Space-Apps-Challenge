@@ -277,13 +277,13 @@
 <div id="Actions" class="tabcontent">
       <table>
         <tr>
-          <td><button class="onCanvas" type="button">Delete this Planet</button>
+          <td><button class="onCanvas" onclick="deletePlanet()" type="button">Delete this Planet</button>
         </tr>
         <tr>
           <td><button class="onCanvas" type="button" disabled>Auto Orbit</button>
         </tr>
         <tr>
-          <td><button class="onCanvas" type="button">Zero Velocity</button>
+          <td><button class="onCanvas" onclick="speed0Planet()" type="button">Zero Velocity</button>
         </tr> 
 	      <tr>
           <td><button class="onCanvas" id="addPlanetButton" onClick="finalizeCreatePlanet();" type="button">Add planet</button>
@@ -317,6 +317,8 @@
 			var gravityFunctions;
 			var objectGenerators;
 			var planets;
+			var selectedPlanet;
+			var earth;
 			var setMode = 0;
 			function onLoad() {
 
@@ -344,10 +346,10 @@
 							html+="<option value="+i+">"+planets[i].name+"</option>";
 					}
 					planetSelector.innerHTML = html;
-					gravityFunctions.addObjectFromModel(objectGenerators.mars, 500, 0, 0, 0, 100, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.earth, 750, 0, 0, 0, 70, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.saturn, 1000, 0, 0, 0, 40, 0, showInfo);
 					gravityFunctions.addObjectFromModel(objectGenerators.sun, 0, 0, 0, 0, 0, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.mars, 500, 0, 0, 0, 90, 0, showInfo);
+					earth = gravityFunctions.addObjectFromModel(objectGenerators.earth, 750, 0, 0, 0, 70, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.jupiter, 1500, 0, 0, 0, 30, 0, showInfo);
 					gravityFunctions.turnOnGravity();
 				});
 
@@ -407,6 +409,7 @@
 			function showInfo(object) {
 				//TODO: show menu
 				//Hint: u can use the variable object to store data
+				selectedPlanet = object;
 				var menu = document.getElementById("menu");
 				var container = document.getElementById("container");
 				var selectPlanetMenu = document.getElementById("selectPlanet");
@@ -416,6 +419,14 @@
 				menu.style.display="inline-block";
 				
 				graphicFunctions.toggleResize(); // <---   IMPORTANT
+			}
+
+			function deletePlanet(){
+				selectedPlanet.dispose();
+			}
+
+			function speed0Planet(){
+				selectedPlanet.speed = {x:0,y:0,z:0};
 			}
 
 			function changeMode(){
