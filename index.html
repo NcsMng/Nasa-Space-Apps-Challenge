@@ -417,8 +417,35 @@
 				container.style.right = "25em";
 				selectPlanet.style.right ="25em"
 				menu.style.display="inline-block";
-				
+				getValues(object);
 				graphicFunctions.toggleResize(); // <---   IMPORTANT
+			}
+			function getValues(object) {
+				var name = document.getElementById("name");
+				var mass = document.getElementById("mass");
+				var radius = document.getElementById("radius");
+				var denisity = document.getElementById("denisity");
+				var temperature = document.getElementById("temperature");
+				var gravity = document.getElementById("gravity");
+				var positionX = document.getElementById("positionX");
+				var positionY = document.getElementById("positionY");
+				var positionZ = document.getElementById("positionZ");
+				var addPlanetButton = document.getElementById("addPlanetButton");
+				var speedX = document.getElementById("speedX");
+				var speedY = document.getElementById("speedY");
+				var speedZ = document.getElementById("speedZ");
+				var ironRange = document.getElementById("ironRange");
+				var silicateRange = document.getElementById("silicateRange");
+				var waterRange = document.getElementById("waterRange");
+				var hidrogenRange = document.getElementById("hidrogenRange");
+				var albedo = document.getElementById("albedo");
+				var emissivity = document.getElementById("emissivity");
+				
+				var data = {name: name.value, mass: mass.value, denisity: denisity.value, temperature: temperature.value, gravity: gravity.value, addPlanetButton, speedX, speedY, speedZ, ironRange, silicateRange, waterRange, hidrogenRange, albedo, emissivity};
+				object.radius = radius.value;
+				object.x = positionX;
+				object.y = positionY;
+				object.z = positionZ;
 			}
 
 			function deletePlanet(){
