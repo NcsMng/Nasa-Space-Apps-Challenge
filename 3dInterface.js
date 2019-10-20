@@ -78,7 +78,7 @@ function startRendering(element, args) {
 		renderer.setSize(width, height);
 		window.addEventListener('resize', onResize, false);
 		element.appendChild(renderer.domElement);
-		camera.position.z = 175;
+		camera.position.z = 1000;
 		camera.position.x = 0;
 		camera.position.y = 0;
 		scene.add(new THREE.AmbientLight(0x202020));
@@ -111,22 +111,21 @@ function startRendering(element, args) {
 					x = moveControlOffset.x;
 					y = moveControlOffset.y;
 					z = moveControlOffset.z;
-					
-					if (Math.abs(x) < 1) {}
+					if (Math.abs(x) < 10) {}
 					else if (x > 0)
-						x = 1;
+						x = 10;
 					else
-						x = -1;
-					if (Math.abs(y) < 1) {}
+						x = -10;
+					if (Math.abs(y) < 10) {}
 					else if (y > 0)
-						y = 1;
+						y = 10;
 					else
-						y = -1;
-					if (Math.abs(z) < 1) {}
+						y = -10;
+					if (Math.abs(z) < 10) {}
 					else if (z > 0)
-						z = 1;
+						z = 10;
 					else
-						z = -1;
+						z = -10;
 					
 					moveControlOffset = {x: moveControlOffset.x - x, y: moveControlOffset.y - y, z: moveControlOffset.z - z, onComplete: moveControlOffset.onComplete};
 					x += controls.target.x;
@@ -145,21 +144,21 @@ function startRendering(element, args) {
 					y = moveCameraOffset.y;
 					z = moveCameraOffset.z;
 					
-					if (Math.abs(x) < 1) {}
+					if (Math.abs(x) < 10) {}
 					else if (x > 0)
-						x = 1;
+						x = 10;
 					else
-						x = -1;
-					if (Math.abs(y) < 1) {}
+						x = -10;
+					if (Math.abs(y) < 10) {}
 					else if (y > 0)
-						y = 1;
+						y = 10;
 					else
-						y = -1;
-					if (Math.abs(z) < 1) {}
+						y = -10;
+					if (Math.abs(z) < 10) {}
 					else if (z > 0)
-						z = 1;
+						z = 10;
 					else
-						z = -1;
+						z = -10;
 					
 					moveCameraOffset = {x: moveCameraOffset.x - x, y: moveCameraOffset.y - y, z: moveCameraOffset.z - z, onComplete: moveCameraOffset.onComplete};
 					x += camera.position.x;
@@ -415,8 +414,12 @@ function startRendering(element, args) {
 		}
 		function setCameraCenter(x, y, z, distance, onComplete) {
 			var i = 2;
+			console.log(controls.target);
+			console.log(camera.position);
 			moveControlOffset = {x: x - controls.target.x, y: y - controls.target.y, z: z - controls.target.z, onComplete: function() { if (--i == 0) onComplete(); }};
 			moveCameraOffset =  {x: x - camera.position.x + distance, y: y - camera.position.y + distance, z: z - camera.position.z + distance, onComplete: function() { if (--i == 0) onComplete(); }};
+			console.log(moveControlOffset);
+			console.log(moveCameraOffset);
 		}
 		function lockCameraControls() {
 			controls.enableZoom = false;

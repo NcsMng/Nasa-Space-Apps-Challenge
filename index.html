@@ -322,8 +322,13 @@
 			var earth;
 			var setMode = 0;
 			function onLoad() {
-
-				graphicFunctions = startRendering(document.getElementById("container"), {tailPoints: 500, showCenterSphere: false});
+					document.addEventListener("keyup",function(e){
+						if(e.code=='KeyE'){
+							console.log(e);
+							earth.events.onClick();
+						}
+					});
+				graphicFunctions = startRendering(document.getElementById("container"), {tailPoints: 10000, showCenterSphere: false});
 				gravityFunctions = initGravity();
 				graphicFunctions.loadTextures(textureNames, function() {
 					objectGenerators = getObjectGenerators();
@@ -346,14 +351,22 @@
 					for(var i = 0; i < planets.length; i++){
 							html+="<option value="+i+">"+planets[i].name+"</option>";
 					}
+					var rapportoSurreale = 23;
+					var unitaAstronomica = 149598262/6378.15/rapportoSurreale;
 					planetSelector.innerHTML = html;
 					gravityFunctions.addObjectFromModel(objectGenerators.sun, 0, 0, 0, 0, 0, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.mars, 500, 0, 0, 0, 80, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.mercury, 350, 0, 0, 0, 90, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.venus, 500, 0, 0, 0, 80, 0, showInfo);
+					earth = gravityFunctions.addObjectFromModel(objectGenerators.earth, 800, 0, 0, 0, 65, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.mars, 1000, 0, 0, 0, 60, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.jupiter, 1800, 0, 0, 0, 44, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.saturn, 2500, 0, 0, 0, 37, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.uranus, 3200, 0, 0, 0, 32, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.neptune, 4000, 0, 0, 0, 25, 0, showInfo);
+					/*gravityFunctions.addObjectFromModel(objectGenerators.snoteaturn, 1500, 0, 0, 0, 30, 0, showInfo);
+					/*gravityFunctions.addObjectFromModel(objectGenerators.saturn, 1500, 0, 0, 0, 30, 0, showInfo);
+					/*gravityFunctions.addObjectFromModel(objectGenerators.saturn, 1500, 0, 0, 0, 30, 0, showInfo);*/
 
-					gravityFunctions.addObjectFromModel(objectGenerators.venus, 600, 0, 0, 0, 80, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.saturn, 1000, 0, 0, 0, 50, 0, showInfo);
-					earth = gravityFunctions.addObjectFromModel(objectGenerators.earth, 750, 0, 0, 0, 70, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.jupiter, 1500, 0, 0, 0, 30, 0, showInfo);
 
 					gravityFunctions.turnOnGravity();
 				});
@@ -361,7 +374,6 @@
 
 				var outputs = [];
       var sliders = [];
-      /*var values = [];*/
 
       sliders[0] = document.getElementById("ironRange");
       outputs[0] = document.getElementById("ironValue");
@@ -447,10 +459,10 @@
 				var emissivity = document.getElementById("emissivity");
 				
 				var data = {name: name.value, mass: mass.value, denisity: denisity.value, temperature: temperature.value, gravity: gravity.value, addPlanetButton, speedX, speedY, speedZ, ironRange, silicateRange, waterRange, hidrogenRange, albedo, emissivity};
-				object.radius = radius.value;
-				object.x = positionX;
-				object.y = positionY;
-				object.z = positionZ;
+				/*object.radius = radius.value;
+				object.x = positionX.value;
+				object.y = positionY.value;
+				object.z = positionZ.value;*/
 			}
 
 			function deletePlanet(){

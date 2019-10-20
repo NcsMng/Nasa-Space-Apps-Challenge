@@ -1,8 +1,9 @@
 var unlockCamera;
+var cycles = 10;
 function initGravity() {
 	var perMmotiviDiDebug = 0;
 	var objects = [];
-	var timePerStep = 0.005;
+	var timePerStep = 0.01;
 	var G = 10;
 	var isComputing = false;
 	var lastObjectInFocus;
@@ -21,6 +22,7 @@ function initGravity() {
 					lastObjectInFocus.catchEvents();
 				object.ignoreEvents();
 				lastObjectInFocus = object;
+				console.log(object);
 				graphicFunctions.setCameraCenter(object.x, object.y, object.z, object.cameraDistance, function() {
 					object.follow();
 					object.lockCamera();
@@ -69,7 +71,7 @@ function initGravity() {
 	function turnOnGravity() {
 		if (gravityInterval != null)
 			return;
-		gravityInterval = setInterval(applyForce, perMmotiviDiDebug);
+		gravityInterval = setInterval(function(){for(var i = 0; i<cycles;i++)applyForce();}, perMmotiviDiDebug);
 	}
 	function turnOffGravity() {
 		if (gravityInterval == null)
