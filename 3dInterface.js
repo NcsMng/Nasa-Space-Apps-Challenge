@@ -1,11 +1,10 @@
-var textureNames = ["earth", "sun", "moon", "venus", "mercury", "mars", "jupiter", "saturn", "smokeparticle"];
+var textureNames = ["earth", "sun", "sun2", "moon", "venus", "mercury", "mars", "jupiter", "saturn", "smokeparticle"];
 var textures = {};
-var graphicFunctions;
 
 function startRendering(element, args) {
 	var settings;
 	var tailPoints, _3DObjectsEvents = {};
-	var scene, camera, renderer, controls, sceneCenterSphere, models = [], objects = [], controlMode, skyBox;
+	var scene, camera, renderer, controls, sceneCenterSphere, models = [], objects = [], controlMode, skyBox, moveControlOffset, moveCameraOffset;
 	
 	function main() {
 		settings = getArgsOrDefault({
@@ -15,7 +14,7 @@ function startRendering(element, args) {
 			showAxes: false,
 			interactionMode: 0
 		});
-		startRendering();
+		init();
 		loadTexture("skyBox", createSkyBox);
 		manageObjectEvents();
 		
@@ -28,10 +27,6 @@ function startRendering(element, args) {
 		if (settings.showCenterSphere)
 			addSceneCenterSphere();
 	}
-	//Prendere 7 punti sulla circonferenza di intersezione
-	//Aggiungere 7 oggetti che hanno velocità da noi definita a priori
-	//Aggiungere effetto fumo
-	//Fondere gli oggetti
 	function getArgsOrDefault(defaultSettings) {
 		if (args == null)
 			args = {};
@@ -39,10 +34,6 @@ function startRendering(element, args) {
 		var settings = {};
 		for (var i = 0; i < keys.length; i++)
 			settings[keys[i]] = args[keys[i]] == null ? defaultSettings[keys[i]] : args[keys[i]];
-		console.log(keys);
-		console.log(settings);
-		console.log(defaultSettings);
-		console.log(args);
 		return settings;
 	}
 	
@@ -58,7 +49,7 @@ function startRendering(element, args) {
 			var intersects = raycaster.intersectObjects(scene.children, false);
 			var minName = null;
 			var tmpDist = null;
-			for (var i = 0; i < intersects.length; i++)
+			for (var i = 0; i < intersects.length; i++) {
 				if (intersects[i].object.name != "")
 					if (tmpDist == null) {
 						tmpDist = intersects[i].distance;
@@ -67,30 +58,32 @@ function startRendering(element, args) {
 						tmpDist = intersects[i].distance;
 						minName = intersects[i].object.name
 					}
+			}
 			if (minName != null)
 				if (_3DObjectsEvents[minName].onClick != null)
 					_3DObjectsEvents[minName].onClick();
 		}, false);
 	}
 	
-	function startRendering() {
+	function init() {
+		var computedStyle = window.getComputedStyle(element);
+		var width = parseInt(computedStyle.getPropertyValue('width'));
+		var height = parseInt(computedStyle.getPropertyValue('height'));
+		console.log(height);
 		scene = new THREE.Scene();
-		camera = new THREE.PerspectiveCamera(75, window.innerWidth /  window.innerHeight, 0.1, 10000000);
+		camera = new THREE.PerspectiveCamera(75, width /  height, 0.1, 10000000);
 		renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-		renderer.setSize(window.innerWidth, window.innerHeight);
-		window.addEventListener('resize', onWindowResize, false);
-		function onWindowResize(){
-			camera.aspect = window.innerWidth / window.innerHeight;
+		renderer.setSize(width, height);
+		element.addEventListener('resize', onResize, false);
+		function onResize(){
+			camera.aspect = width / height;
 			camera.updateProjectionMatrix();
-			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setSize(width, height);
 		}
-		document.body.appendChild(renderer.domElement);
+		element.appendChild(renderer.domElement);
 		camera.position.z = 175;
 		camera.position.x = 0;
 		camera.position.y = 0;
-		var light = new THREE.AmbientLight(0xffffff);
-		light.intensity = 1.5;
-		scene.add(light);
 	}
 	
 	function animate() {
@@ -102,11 +95,72 @@ function startRendering(element, args) {
 				sceneCenterSphere.position.set(controls.target.x, controls.target.y, controls.target.z);
 				sceneCenterSphere.scale.set(rateo, rateo, rateo);
 			}
-			/*if (skyBox != null) {
-				var skyBoxRateo = dist;
-				skyBox.position.set(controls.target.x, controls.target.y, controls.target.z);
-				skyBox.scale.set(skyBoxRateo, skyBoxRateo, skyBoxRateo);
-			}*/
+			if (moveControlOffset != null) {
+				if (moveControlOffset.x == 0 && moveControlOffset.y == 0 && moveControlOffset.z == 0) {
+					moveControlOffset.onComplete();
+					moveControlOffset = null;
+				} else {
+					var x, y, z;
+					x = moveControlOffset.x;
+					y = moveControlOffset.y;
+					z = moveControlOffset.z;
+					
+					if (Math.abs(x) < 1) {}
+					else if (x > 0)
+						x = 1;
+					else
+						x = -1;
+					if (Math.abs(y) < 1) {}
+					else if (y > 0)
+						y = 1;
+					else
+						y = -1;
+					if (Math.abs(z) < 1) {}
+					else if (z > 0)
+						z = 1;
+					else
+						z = -1;
+					
+					moveControlOffset = {x: moveControlOffset.x - x, y: moveControlOffset.y - y, z: moveControlOffset.z - z, onComplete: moveControlOffset.onComplete};
+					x += controls.target.x;
+					y += controls.target.y;
+					z += controls.target.z;
+					controls.target.set(x, y, z);
+				}
+			}
+			if (moveCameraOffset != null) {
+				if (moveCameraOffset.x == 0 && moveCameraOffset.y == 0 && moveCameraOffset.z == 0) {
+					moveCameraOffset.onComplete();
+					moveCameraOffset = null;
+				} else {
+					var x, y, z;
+					x = moveCameraOffset.x;
+					y = moveCameraOffset.y;
+					z = moveCameraOffset.z;
+					
+					if (Math.abs(x) < 1) {}
+					else if (x > 0)
+						x = 1;
+					else
+						x = -1;
+					if (Math.abs(y) < 1) {}
+					else if (y > 0)
+						y = 1;
+					else
+						y = -1;
+					if (Math.abs(z) < 1) {}
+					else if (z > 0)
+						z = 1;
+					else
+						z = -1;
+					
+					moveCameraOffset = {x: moveCameraOffset.x - x, y: moveCameraOffset.y - y, z: moveCameraOffset.z - z, onComplete: moveCameraOffset.onComplete};
+					x += camera.position.x;
+					y += camera.position.y;
+					z += camera.position.z;
+					camera.position.set(x, y, z);
+				}
+			}
 			controls.update();
 		}
 		renderer.render(scene, camera);
@@ -121,16 +175,19 @@ function startRendering(element, args) {
 			objects[i].y = models[i].position.y;
 			objects[i].z = models[i].position.z;
 		}
-		controls = new THREE.TrackballControls(camera);
-		controls.rotateSpeed = 5;
-		controls.zoomSpeed = 5;
-		controls.panSpeed = 2;
-		controls.noZoom = false;
-		controls.noPan = false;
-		controls.staticMoving = true;
-		controls.dynamicDampingFactor = 1;
+		controls = new THREE.OrbitControls(camera, renderer.domElement);
+		controls.rotateSpeed = 1;
+		controls.autoRotateSpeed = 1;
+		controls.autoRotate = false;
+		controls.zoomSpeed = 1;
+		controls.enableZoom = true;
+		controls.enablePan = false;
+		controls.enableRotate = true;
+		//controls.enableDamping = true;
 		controls.minDistance = 2;
 		controls.maxDistance = 10000;
+		controls.enableDamping = true;
+		controls.dampingFactor = 0.07;
 	}
 	
 	function startEditingMode() {
@@ -150,36 +207,61 @@ function startRendering(element, args) {
 	}
 	
 	function createSkyBox() {
-		textures.skyBox.mapping = THREE.UVMapping;
-		skyBox = new THREE.Mesh(new THREE.SphereGeometry(10000000, 4, 4), textures.skyBox);
+		textures.skyBox.meshLambertMaterial.mapping = THREE.UVMapping;
+		skyBox = new THREE.Mesh(new THREE.SphereGeometry(10000000, 4, 4), textures.skyBox.meshLambertMaterial);
 		skyBox.material.side = THREE.DoubleSide;
 		scene.add(skyBox);
 	}
 	
 	function getGraphicFunctions() {
 		var objectId = 1;
-		function addObject(texture, radius, x, y, z) {
+		var cameraFollowObject = null;
+		function addObject(texture, radius, x, y, z, lightSourceColor) {
+			var isALightSource = lightSourceColor != null;
 			if (x == null)
 				x = 0;
 			if (y == null)
 				y = 0;
 			if (z == null)
 				z = 0;
-			var model = new THREE.Mesh(new THREE.SphereGeometry(radius, 32, 32), texture);
-			model.material.side = THREE.DoubleSide;
-			model.position.set(x, y, z);
-			scene.add(model);
+			if (texture == null) {
+				console.error("TEXTURE NOT FOUND!");
+				return;
+			}
 			var id = objectId++;
-			model.name = id;
+			var planet = new THREE.Mesh(new THREE.SphereGeometry(radius, 32, 32), isALightSource ? new THREE.MeshBasicMaterial({map: texture.baseMap, opacity: 0.5}) : texture.meshLambertMaterial);
+			var model = new THREE.Mesh(new THREE.SphereGeometry(radius + 3, 32, 32), new THREE.MeshBasicMaterial({transparent: true, opacity: 0}));
+			model.renderOrder = 3;
+			planet.material.side = THREE.DoubleSide;
 			_3DObjectsEvents[id] = {};
 			var tailFunctions;
 			if (settings.showTail)
 				tailFunctions = createTail(x, y, z);
 			else
 				tailFunctions = {addPoint: function(x, y, z) {}};
-			var object = {id, texture, radius, x, y, z, events: _3DObjectsEvents[id],
+			var cameraLock = false;
+			var cameraDistance = radius * 2;
+			var lightSprite;
+			model.add(planet);
+			if (isALightSource) {
+				var light = new THREE.PointLight(lightSourceColor, 1.5);
+				model.add(light);
+				var spriteMap = new THREE.TextureLoader().load("images/glow.png");
+				var spriteMaterial = new THREE.SpriteMaterial({map: spriteMap, color: lightSourceColor});
+				lightSprite = new THREE.Sprite(spriteMaterial);
+				lightSprite.scale.set(radius * 4, radius * 3.5, 1);
+				lightSprite.renderOrder = 2;
+				model.add(lightSprite);
+			}
+			
+			var object = {id, texture, radius, cameraDistance, lightSourceColor, cameraFollow: false, x, y, z, events: _3DObjectsEvents[id],
 					setPosition: function(x, y, z) {
 						model.position.set(x, y, z);
+						if (object.cameraFollow) {
+							controls.target.set(x, y, z);
+							if (cameraLock)
+								camera.position.set(x + cameraDistance, y + cameraDistance, z + cameraDistance);
+						}
 					},
 					setScale: function(scale) {
 						model.scale.set(scale, scale, scale);
@@ -192,11 +274,49 @@ function startRendering(element, args) {
 						object.x += x;
 						object.y += y;
 						object.z += z;
-						tailFunctions.addPoint(object.x, object.y, object.z);
-						model.position.set(object.x, object.y, object.z);
+						x = object.x;
+						y = object.y;
+						z = object.z;
+						tailFunctions.addPoint(x, y, z);
+						model.position.set(x, y, z);
+						if (object.cameraFollow) {
+							controls.target.set(x, y, z);
+							if (cameraLock)
+								camera.position.set(x + cameraDistance, y + cameraDistance, z + cameraDistance);
+						}
+					},
+					follow: function() {
+						if (cameraFollowObject != null)
+							cameraFollowObject.unfollow();
+						object.cameraFollow = true;
+						cameraFollowObject = object;
+					},
+					unfollow: function() {
+						object.cameraFollow = false;
+						if (cameraLock)
+							unlockCamera();
+					},
+					lockCamera: function() {
+						cameraLock = true;
+						controls.enableZoom = false;
+						controls.enableRotate = false;
+					},
+					unlockCamera: function() {
+						cameraLock = false;
+						controls.enableZoom = true;
+						controls.enableRotate = true;
+					},
+					ignoreEvents: function() {
+						model.name = "";
+					},
+					catchEvents: function() {
+						model.name = id;
 					}
 				};
-			models.push(model);	
+			model.name = id;
+			model.position.set(x, y, z);
+			scene.add(model);
+			models.push(model);
 			objects.push(object);
 			return object;
 		}
@@ -225,8 +345,9 @@ function startRendering(element, args) {
 			var curve = new THREE.CatmullRomCurve3(pointArray);
 			var points = curve.getPoints(50);
 			var geometry = new THREE.BufferGeometry().setFromPoints(pointArray);
-			var material = new THREE.LineBasicMaterial({color: 0x1e90ff});
+			var material = new THREE.LineBasicMaterial({color: 0x666666, transparent: true, opacity: 1, linewidth: 1});
 			var tail = new THREE.Line(geometry, material);
+			tail.renderOrder = 1;
 			scene.add(tail);
 			
 			return {
@@ -242,12 +363,24 @@ function startRendering(element, args) {
 				}
 			};
 		}
-		return {addObject, loadTexture, loadTextures, setMode};
+		function setCameraCenter(x, y, z, distance, onComplete) {
+			var i = 2;
+			moveControlOffset = {x: x - controls.target.x, y: y - controls.target.y, z: z - controls.target.z, onComplete: function() { if (--i == 0) onComplete(); }};
+			moveCameraOffset =  {x: x - camera.position.x + distance, y: y - camera.position.y + distance, z: z - camera.position.z + distance, onComplete: function() { if (--i == 0) onComplete(); }};
+		}
+		function lockCameraControls() {
+			controls.enableZoom = false;
+			controls.enableRotate = false;
+		}
+		return {addObject, loadTexture, loadTextures, setMode, setCameraCenter, lockCameraControls};
 	}
 	var textureLoader = new THREE.TextureLoader();
 	function loadTexture(textureName, onComplete) {
 		textureLoader.load("textures/" + textureName, function(texture) {
-			textures[textureName] = new THREE.MeshLambertMaterial({map: texture});
+			textures[textureName] = {
+				meshLambertMaterial: new THREE.MeshLambertMaterial({map: texture}),
+				baseMap: texture
+			};
 			if (onComplete != null)
 				onComplete();
 		});

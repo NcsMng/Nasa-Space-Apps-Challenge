@@ -1,20 +1,35 @@
+var unlockCamera;
 function initGravity() {
 	var perMmotiviDiDebug = 10;
 	var objects = [];
 	var timePerStep = 0.005;
 	var G = 1;
 	var isComputing = false;
-	function createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ) {
-		var object = graphicFunctions.addObject(texture, radius, x, y, z);
+	var lastObjectInFocus;
+	function createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor) {
+		var object = graphicFunctions.addObject(texture, radius, x, y, z, lightSourceColor);
 		object.mass = mass;
 		object.speed = {x: speedX, y: speedY, z: speedZ};
 		object.events.onClick = function() {
-			alert(radius);
+			if (!object.cameraFollow) {
+				turnOffGravity();
+				graphicFunctions.lockCameraControls();
+				if (lastObjectInFocus != null)
+					lastObjectInFocus.catchEvents();
+				object.ignoreEvents();
+				lastObjectInFocus = object;
+				graphicFunctions.setCameraCenter(object.x, object.y, object.z, object.cameraDistance, function() {
+					object.follow();
+					object.lockCamera();
+					turnOnGravity();
+					unlockCamera = object.unlockCamera;
+				});
+			}
 		};
 		return object;
 	}
-	function addObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ) {
-		objects.push(createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ));
+	function addObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor) {
+		objects.push(createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor));
 	}
 	var gravityInterval = null;
 	function toggleGravity() {
@@ -104,7 +119,7 @@ function initGravity() {
 				collisions[i].object1.remove();
 				collisions[i].object2.remove();
 				//TODO: compute radius
-				newObjectArray.push(createObject(collisions[i].object1.texture, collisions[i].object1.radius, collisions[i].object1.mass + collisions[i].object2.mass, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z));
+				newObjectArray.push(createObject(collisions[i].object1.texture, collisions[i].object1.radius, collisions[i].object1.mass + collisions[i].object2.mass, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z, collisions[i].object1.lightSourceColor));
 			}
 		objects = newObjectArray;
 		isComputing = false;
