@@ -95,10 +95,13 @@
 				graphicFunctions = startRendering(document.getElementById("container"), {tailPoints: 500, showCenterSphere: false});
 				gravityFunctions = initGravity();
 				graphicFunctions.loadTextures(textureNames, function() {
-					gravityFunctions.addObject(textures.saturn, 2, 100, 0, 0, 100, 70, 0, 0, null, showInfo);
-					gravityFunctions.addObject(textures.earth, 2, 100, 0, 0, 150, 60, 0, 0, null, showInfo);
-					gravityFunctions.addObject(textures.mars, 2, 100, 0, 0, 250, 50, 0, 0, null, showInfo);
-					gravityFunctions.addObject(textures.sun2, 12, 600000, 0, 0, 0, 0, 0, 0, 0xffffff, showInfo);
+					objectGenerators = getObjectGenerators();
+					/*gravityFunctions.addObject(textures.saturn, 2, 100, 0, 0, 100, 0, 0, 0, null, showInfo);
+					gravityFunctions.addObject(textures.earth, 2, 100, 0, 0, 150, 0, 0, 0, null, showInfo);
+					gravityFunctions.addObject(textures.mars, 2, 100, 0, 0, 250, 0, 0, 0, null, showInfo);
+					gravityFunctions.addObject(textures.sun2, 12, 600000, 0, 0, 0, 0, 0, 0, 0xffffff, showInfo);*/
+					gravityFunctions.addObjectFromModel(objectGenerators.sun, 1000, 0, 0, 0, 0, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.blackhole, 0, 0, 0, 0, 0, 0, showInfo);
 					gravityFunctions.turnOnGravity();
 				});
 			}

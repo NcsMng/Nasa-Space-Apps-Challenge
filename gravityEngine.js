@@ -1,9 +1,9 @@
 var unlockCamera;
 function initGravity() {
-	var perMmotiviDiDebug = 10;
+	var perMmotiviDiDebug = 0;
 	var objects = [];
 	var timePerStep = 0.005;
-	var G = 100;
+	var G = 1;
 	var isComputing = false;
 	var lastObjectInFocus;
 	function manageObject(object, mass, speedX, speedY, speedZ, onClick) {
@@ -139,7 +139,15 @@ function initGravity() {
 				collisions[i].object1.remove();
 				collisions[i].object2.remove();
 				//TODO: compute radius
-				newObjectArray.push(createObject(collisions[i].object1.texture, finalRadius,finalMass, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z, collisions[i].object1.lightSourceColor));
+				var newObject;
+				if (collisions[i].object1.objectGenerator != null) {
+					newObject = createObjectFromModel(collisions[i].object1.objectGenerator, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z);
+					newObject.radius = finalRadius;
+					newObject.mass = finalMass;
+				} else {
+					newObject = createObject(collisions[i].object1.texture, finalRadius,finalMass, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z, collisions[i].object1.lightSourceColor);
+				}
+				newObjectArray.push(newObject);
 			}
 		objects = newObjectArray;
 		isComputing = false;
