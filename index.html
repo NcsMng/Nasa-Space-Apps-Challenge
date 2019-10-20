@@ -42,11 +42,11 @@
 				gravityFunctions = initGravity();
 				graphicFunctions.loadTextures(textureNames, function() {
 					objectGenerators = getObjectGenerators();
-					/*gravityFunctions.addObject(textures.saturn, 2, 100, 0, 0, 100, 70, 0, 0, null);
-					gravityFunctions.addObject(textures.earth, 2, 100, 0, 0, 150, 60, 0, 0, null);
-					gravityFunctions.addObject(textures.mars, 2, 100, 0, 0, 250, 50, 0, 0, null);*/
+					gravityFunctions.addObjectFromModel(objectGenerators.saturn, 0, 0, 100, 70, 0, 0);
+					gravityFunctions.addObjectFromModel(objectGenerators.earth, 0, 0, 150, 60, 0, 0);
+					gravityFunctions.addObjectFromModel(objectGenerators.mars, 0, 0, 250, 50, 0, 0);
 					gravityFunctions.addObjectFromModel(objectGenerators.sun, 1000, 0, 0, 0, 100, 0);
-					gravityFunctions.addObjectFromModel(objectGenerators.blackhole, 0, 0, 0, 0, 0, 0);
+					//gravityFunctions.addObjectFromModel(objectGenerators.blackhole, 0, 0, 0, 0, 0, 0);
 					gravityFunctions.turnOnGravity();
 				});
 			}
