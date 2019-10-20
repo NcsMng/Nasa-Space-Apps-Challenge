@@ -3,7 +3,7 @@ function initGravity() {
 	var perMmotiviDiDebug = 0;
 	var objects = [];
 	var timePerStep = 0.005;
-	var G = 1;
+	var G = 10;
 	var isComputing = false;
 	var lastObjectInFocus;
 	function manageObject(object, mass, speedX, speedY, speedZ, onClick) {
