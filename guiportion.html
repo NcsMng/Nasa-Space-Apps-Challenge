@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--style>
+      *{
+        outline: none;
+      }
+      body {font-family: Arial;}
+      input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+      /* Style the tab */
+      .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+      }
+
+      /* Style the buttons inside the tab */
+      .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 17px;
+      }
+
+      /* Change background color of buttons on hover */
+      .tab button:hover {
+        background-color: #ddd;
+      }
+
+      /* Create an active/current tablink class */
+      .tab button.active {
+        background-color: #ccc;
+      }
+
+      /* Style the tab content */
+      .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+      }
+
+
+
+      .slidecontainer {
+        width: 100%;
+      }
+
+      .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+      }
+
+      .slider:hover {
+        opacity: 1;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+      }
+
+      .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+      }
+
+      .unitOfMeasure{
+        width: 27px;
+        position: absolute;
+        right: 1px;
+        z-index: 2;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .measure{
+        padding-right: 27px;
+      }
+
+      .td:nth-child(1){
+        width: 40%;
+      }
+
+      td:nth-child(2){
+        width: 60%;
+      }
+
+      td, th {
+        position: relative;
+        padding: 8px;
+      }
+
+      tr, tbody{
+        width: 100%
+      }
+
+      td input{
+        width: 100%;
+        border-radius: 3px;
+        padding: 3px;
+      }
+
+      input { 
+        text-align: center; 
+      }
+    </style-->
+    <style>
+      .tabcontent {
+          display: none;
+          /*padding: 6px 12px;
+          border: 1px solid #ccc;*/
+          border-top: none;
+      }
+      tr{
+        width: 100%;
+      }
+
+      /*.measure{
+          padding-right: 27px;
+        }
+
+        .unitOfMeasure{
+          width: 27px;
+          position: absolute;
+          right: 1px;
+          z-index: 2;
+          top: 50%;
+          transform: translateY(-50%);
+        }*/
+    </style>
+  </head>
+  <body>
+
+
+    <div class="tab">
+      <button class="tablinks" onclick="tabs(event, 'Overview')">Overview</button>
+      <button class="tablinks" onclick="tabs(event, 'Motion')">Motion</button>
+      <button class="tablinks" onclick="tabs(event, 'Composition')">Composition</button>
+      <button class="tablinks" onclick="tabs(event, 'Temperature')">Temperature</button>
+      <button class="tablinks" onclick="tabs(event, 'Actions')">Actions</button>
+
+    </div>
+<div id="Overview" class="tabcontent">
+      <table>
+        <tr class="inputField">
+          <td>Name</td>
+          <td><input type="text" id="name" name="name" placeholder="Planet name"><div class="unitOfMeasure"></div></td>
+        </tr>
+        <tr class="inputField">
+          <td>Mass</td>
+          <td><input type="number" id="mass" class="measure" name="mass" placeholder="Planet mass" min = 0><div class="unitOfMeasure"> kg</div></td>
+        </tr>
+        <tr class="inputField">
+          <td>Radius</td>
+          <td><input type="number" id="radius" class="measure" name="radius" placeholder="Planet radius" min = 0><div class="unitOfMeasure"> km</div></td>
+        </tr>
+        <tr class="inputField">
+          <td>Denisity</td>
+          <td><input type="number" id="denisity" class="measure" name="denisity" placeholder="Planet density" min = 0><div class="unitOfMeasure"> g/cm&#179;</div></td>
+        </tr>
+
+        <tr class="inputField">
+          <td>Surface Temperatures</td>
+          <td> <input type="number" id="temperature" class="measure" name="temperature" placeholder="Planet temperature"><div class="unitOfMeasure"> °C</div></td>
+        </tr>
+
+        <tr>
+          <td class="inputField">Surface Gravity</td>
+          <td><input type="number" id="gravity" class="measure" name="gravity" placeholder="Planet gravity" min = 0><div class="unitOfMeasure"> m/s&#178;</div></td>
+        </tr>
+
+      </table>
+    </div>
+    <div id="Motion" class="tabcontent">
+      <table>
+        <tr class="inputField">
+          <td>Speed</td>
+          <td><input type="number" id="speed" class="measure" name="speed" placeholder="Planet speed"><div class="unitOfMeasure"> km/s</div></td>
+        </tr>
+      </table>
+    </div>
+    <div id="Composition" class="tabcontent" class="slidecontainer">
+      <table>
+        <tr>
+          <td>Iron </td>
+          <td> - </td>
+          <td><input id="ironRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
+          <td> + </td>
+          <td> <p>Value: <span id="ironValue"></span></p></td>
+        </tr>
+        <tr>
+          <td>Silicate </td>
+          <td> - </td>
+          <td><input id = "silicateRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
+          <td> + </td>
+          <td> <p>Value: <span id="silicateValue"></span></p></td>
+        </tr>
+        <tr>
+          <td>Water </td>
+          <td> - </td>
+          <td><input id = "waterRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
+          <td> + </td>
+          <td> <p>Value: <span id="waterValue"></span></p></td>
+        </tr>
+        <tr>
+          <td>Hidrogen </td>
+          <td> - </td>
+          <td><input id = "hidrogenRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
+          <td> + </td>
+          <td> <p>Value: <span id="hidrogenValue"></span></p></td>
+        </tr>
+      </table>
+
+    </div>
+    <div id="Temperature" class="tabcontent">
+      <table>
+        <tr class="inputField">
+          <td>Surface Temperature</td>
+          <td><input type="number" id="temperature" class="measure" name="temperature" placeholder="Planet temperature"><div class="unitOfMeasure"> °C</div></td>
+        </tr>
+        <tr class="inputField">
+          <td>Avarage Albedo</td>
+          <td><input type="number" id="albedo" name="Albedo" placeholder="Albedo" step = 0.01 min = 0 max = 1></td>
+        </tr>
+        <tr class="inputField">
+          <td>Infrared Emissivity</td>
+          <td><input type="number" id="emissivity" name="emissivity" placeholder="Infrared emissivity" min = 0 max = 1 step = 0.01></td>
+        </tr>
+      </table>
+</div>
+    <div id="Actions" class="tabcontent">
+      <table>
+        <tr>
+          <td><button type="button">Delete this Planet</button>
+        </tr>
+        <tr>
+          <td><button type="button">Auto Orbit</button>
+        </tr>
+        <tr>
+          <td><button type="button">Zero Velocity</button>
+        </tr> 
+        <tr>
+          <td><input type="checkbox" id="show-trail" value="trail" checked> Show Trail
+          </td>
+        </tr>
+
+      </table>
+
+    </div>
+
+
+    <script>
+      function tabs(evt, cityName) {
+        console.log(evt);
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
+
+      var outputs = [];
+      var sliders = [];
+      var values = [];
+
+      sliders[0] = document.getElementById("ironRange");
+      outputs[0] = document.getElementById("ironValue");
+      outputs[0].innerHTML = sliders[0].value;
+
+      sliders[1] = document.getElementById("silicateRange");
+      outputs[1] = document.getElementById("silicateValue");
+      outputs[1].innerHTML = sliders[1].value;
+
+      sliders[2] = document.getElementById("waterRange");
+      outputs[2] = document.getElementById("waterValue");
+      outputs[2].innerHTML = sliders[2].value;
+
+      sliders[3] = document.getElementById("hidrogenRange");
+      outputs[3] = document.getElementById("hidrogenValue");
+      outputs[3].innerHTML = sliders[3].value;
+
+
+
+      for(var i = 0  ; i < sliders.length; i++ ){
+        sliders[i].oninput = (function(i){ return function(){
+          var oldValue = parseFloat(outputs[i].innerHTML);
+          var difference = parseFloat(sliders[i].value) - oldValue;
+          console.log("difference", difference);
+          var vals = [];
+          fullSum = 0;
+          for(var j = 0; j < sliders.length; j++)
+            if(j != i)
+              fullSum += parseFloat(sliders[j].value);
+          for(var j = 0; j < sliders.length; j++){
+            if(j!=i){
+              var thisDiff = fullSum == 0?difference/3:difference * parseFloat(sliders[j].value) / fullSum;
+              vals[j] = parseFloat(sliders[j].value) - thisDiff;
+            }
+          }
+          console.log(vals);
+          for(var j = 0; j < sliders.length; j++){
+            if(j!=i){
+              sliders[j].value = vals[j];
+            }
+            outputs[j].innerHTML = sliders[j].value.substr(0,4);
+          }
+          /*var sum = 0;
+          var remains = 0; 
+          for(var j = 0; j < sliders.length; j++){
+            if(j != i && (sliders[j].value!=0 || oldValue == 100)){
+                var finalValue = sliders[j].value - difference + remains;
+                remains = 0;
+                if(finalValue<0){
+                  remains += finalValue;
+                  finalValue = 0;
+                } 
+                sliders[j].value -= finalValue;
+                outputs[j].innerHTML = sliders[j].value;
+            }
+          }
+          while(remains!=0){
+            for(var j = 0; j < sliders.length; j++){
+              var finalValue = sliders[j].value - difference + remains;
+              remains = 0;
+              if(finalValue<0){
+                remains += finalValue;
+                finalValue = 0;
+              } 
+              sliders[j].value -= finalValue;
+              outputs[j].innerHTML = sliders[j].value;
+            }
+          }*/
+
+        };})(i);
+
+      }
+      
+    </script>
+
+  </body>
+</html>
