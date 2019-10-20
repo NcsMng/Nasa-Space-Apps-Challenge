@@ -326,8 +326,11 @@
 						if(e.code=='KeyE'){
 							console.log(e);
 							earth.events.onClick();
-						}
+						} else if(e.code == 'Space')
+							gravityFunctions.toggleGravity();
 					});
+
+				
 				graphicFunctions = startRendering(document.getElementById("container"), {tailPoints: 10000, showCenterSphere: false});
 				gravityFunctions = initGravity();
 				graphicFunctions.loadTextures(textureNames, function() {
@@ -358,11 +361,11 @@
 					gravityFunctions.addObjectFromModel(objectGenerators.mercury, 350, 0, 0, 0, 90, 0, showInfo);
 					gravityFunctions.addObjectFromModel(objectGenerators.venus, 500, 0, 0, 0, 80, 0, showInfo);
 					earth = gravityFunctions.addObjectFromModel(objectGenerators.earth, 800, 0, 0, 0, 65, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.mars, 1000, 0, 0, 0, 60, 0, showInfo);
+					//gravityFunctions.addObjectFromModel(objectGenerators.mars, 1000, 0, 0, 0, 60, 0, showInfo);
 					gravityFunctions.addObjectFromModel(objectGenerators.jupiter, 1800, 0, 0, 0, 44, 0, showInfo);
 					gravityFunctions.addObjectFromModel(objectGenerators.saturn, 2500, 0, 0, 0, 37, 0, showInfo);
 					gravityFunctions.addObjectFromModel(objectGenerators.uranus, 3200, 0, 0, 0, 32, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.neptune, 4000, 0, 0, 0, 25, 0, showInfo);
+					/*gravityFunctions.addObjectFromModel(objectGenerators.neptune, 4000, 0, 0, 0, 30, 0, showInfo);
 					/*gravityFunctions.addObjectFromModel(objectGenerators.snoteaturn, 1500, 0, 0, 0, 30, 0, showInfo);
 					/*gravityFunctions.addObjectFromModel(objectGenerators.saturn, 1500, 0, 0, 0, 30, 0, showInfo);
 					/*gravityFunctions.addObjectFromModel(objectGenerators.saturn, 1500, 0, 0, 0, 30, 0, showInfo);*/
@@ -493,7 +496,12 @@
 				document.getElementById("addPlanetButton").style.display="block";
 				document.getElementById("Creator").style.display="block";
 				showInfo(null);
-
+				document.getElementById("positionX").value = 1000;
+				document.getElementById("positionY").value = 0;
+				document.getElementById("positionZ").value = 0;
+				document.getElementById("speedX").value = 0;
+				document.getElementById("speedY").value = 60;
+				document.getElementById("speedZ").value = 0;
 			}
 
 			function finalizeCreatePlanet(){
@@ -514,6 +522,7 @@
 				gravityFunctions.addObjectFromModel(planets[type].objectGenerator,position.x,position.y,position.z,spd.x,spd.y,spd.z,showInfo);
 				document.getElementById("addPlanetButton").style.display="none";
 				document.getElementById("Creator").style.display="none";
+				changeMode();
 
 			}
 

@@ -78,7 +78,7 @@ function startRendering(element, args) {
 		renderer.setSize(width, height);
 		window.addEventListener('resize', onResize, false);
 		element.appendChild(renderer.domElement);
-		camera.position.z = 1000;
+		camera.position.z = 2000;
 		camera.position.x = 0;
 		camera.position.y = 0;
 		scene.add(new THREE.AmbientLight(0x202020));

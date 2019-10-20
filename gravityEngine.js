@@ -1,5 +1,5 @@
 var unlockCamera;
-var cycles = 10;
+var cycles = 2;
 function initGravity() {
 	var perMmotiviDiDebug = 0;
 	var objects = [];
