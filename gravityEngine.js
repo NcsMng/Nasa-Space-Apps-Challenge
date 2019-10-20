@@ -6,12 +6,14 @@ function initGravity() {
 	var G = 1;
 	var isComputing = false;
 	var lastObjectInFocus;
-	function createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor) {
+	function createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick) {
 		var object = graphicFunctions.addObject(texture, radius, x, y, z, lightSourceColor);
 		object.mass = mass;
 		object.speed = {x: speedX, y: speedY, z: speedZ};
 		object.events.onClick = function() {
 			if (!object.cameraFollow) {
+				if (onClick != null)
+					onClick(object);
 				turnOffGravity();
 				graphicFunctions.lockCameraControls();
 				if (lastObjectInFocus != null)
@@ -28,8 +30,10 @@ function initGravity() {
 		};
 		return object;
 	}
-	function addObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor) {
-		objects.push(createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor));
+	function addObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick) {
+		var object = createObject(texture, radius, mass, x, y, z, speedX, speedY, speedZ, lightSourceColor, onClick);
+		objects.push(object);
+		return object;
 	}
 	var gravityInterval = null;
 	function toggleGravity() {
