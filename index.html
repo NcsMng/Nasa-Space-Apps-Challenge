@@ -17,13 +17,77 @@
 			#container {
 				width: 100%;
 				height: 100%;
-				display: block;
+				display: inline-block;
 			}
+			#menu {
+				display: none;
+				width: 30%;
+				height: 100%;
+			}
+			#toggleMenuButton{
+				position: absolute;
+				top:20px;
+				right: 20px;
+				width: 10px;
+				height: 10px;
+				background-color: rgba(200,200,200,0.5);
+			}
+
 		</style>
 	</head>
 	<body onload="onLoad()">
-		
+		<button id="toggleMenuButton" onclick="toggleMenu()">=</button>
 		<div id="container"></div>
+		<div id="menu">
+			<div class="divToggler" onClick="toggle(this.nextSibling);">Overview</div>
+			<div id="Overview" class="tabcontent">
+			    <table>
+			        <tr class="inputField">
+			            <td>Name</td>
+			            <td>
+			                <input type="text" id="name" name="name" placeholder="Planet name">
+			            </td>
+			        </tr>
+			        <tr class="inputField">
+			            <td>Mass</td>
+			            <td>
+			                <input type="number" id="mass" class="measure" name="mass" placeholder="Planet mass" min=0>
+			                <div class="unitOfMeasure"> kg</div>
+			            </td>
+			        </tr>
+			        <tr class="inputField">
+			            <td>Radius</td>
+			            <td>
+			                <input type="number" id="radius" class="measure" name="radius" placeholder="Planet radius" min=0>
+			                <div class="unitOfMeasure"> km</div>
+			            </td>
+			        </tr>
+			        <tr class="inputField">
+			            <td>Denisity</td>
+			            <td>
+			                <input type="number" id="denisity" class="measure" name="denisity" placeholder="Planet density" min=0>
+			                <div class="unitOfMeasure"> g/cm&#179;</div>
+			            </td>
+			        </tr>
+
+			        <tr class="inputField">
+			            <td>Surface Temperatures</td>
+			            <td>
+			                <input type="number" id="temperature" class="measure" name="temperature" placeholder="Planet temperature">
+			                <div class="unitOfMeasure"> °C</div>
+			            </td>
+			        </tr>
+
+			        <tr>
+			            <td class="inputField">Surface Gravity</td>
+			            <td>
+			                <input type="number" id="gravity" class="measure" name="gravity" placeholder="Planet gravity" min=0>
+			                <div class="unitOfMeasure"> m/s&#178;</div>
+			            </td>
+			        </tr>
+			    </table>
+			</div>
+		</div>
 		
 		<script src="3dLib/js/three.js"></script>
 		<script src="3dLib/js/THREE.MeshLine.js"></script>
@@ -45,6 +109,29 @@
 					gravityFunctions.addObject(textures.sun2, 12, 600000, 0, 0, 0, 0, 0, 0, 0xffffff);
 					gravityFunctions.turnOnGravity();
 				});
+			}
+		</script>
+		<script type="text/javascript">
+			var menuToggled = false;
+			function toggleMenu(){
+				var menu = document.getElementById("menu");
+				console.log("ciao");
+				if(menuToggled){
+					console.log("closeMenu");
+					document.getElementById("container").style.width="100%";
+					menu.style.display="none";
+					menuToggled = false;
+				}else{
+					console.log("openMenu");
+					document.getElementById("container").style.width="70%";
+					menu.style.display="inline-block";
+					menuToggled = true;
+				}
+			}
+
+			function toggle(obj){
+				if(obj.style.display!="none")obj.style.display="none";
+				else obj.style.display = "block";
 			}
 		</script>
 	</body>
