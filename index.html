@@ -4,7 +4,13 @@
 		<meta charset="utf-8">
 		<title>My first three.js app</title>
 		<style>
+			*{
+				outline: none;
+			}
 			body, html {
+				font-family: Arial;
+				font-size: 50px;
+				color:white;
 				margin: 0;
 				overflow: hidden;
 				width: 100%;
@@ -15,14 +21,111 @@
 				height: 100%;
 			}
 			#container {
-				width: 100%;
-				height: 100%;
-				display: inline-block;
+				top:0;
+				bottom: 0;
+				right: 	0;
+				left: 0;
+				position: fixed;
 			}
 			#menu {
+				padding-right: 50px;
+				overflow: auto;
+				font-size: 75px;
+				background-color: black;
+				position: fixed;
+				right: 0;
+				top: 0;
+				bottom: 0;
 				display: none;
-				width: 300px;
+				width: 1600px;
+			}
+			#addPlanet{
+				background-color: rgba(0,0,0,0);
+				position: fixed;
+				z-index: 2;
+				top: 0;
+				right: 0;
+				left: 0;
+				height: 100px;
+			}
+			#addPlanet select{
+				margin-left: 10px;
+				background-color:inherit;
+				color:inherit;
 				height: 100%;
+				width: 500px;
+				font-size: 50px;
+			}
+
+			.inputField td:nth-child(1){
+				width: 560px;
+			}
+
+			input[type="range"]{
+				width: 100%
+			}
+
+			button{
+				font-size: inherit; 
+			}
+			td input{
+				width:100%;
+			}
+
+			td{
+
+				position: relative;
+				padding: 20px;
+				font-size: inherit;
+			}
+
+			td input{
+				z-index: 0;
+				border-radius: 20px;
+				padding: 20px;
+			}
+
+			#Actions button{
+				width: 650px;
+			}
+
+			.unitOfMeasure{
+				color: black;
+				z-index: 50;
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				right: 50px;
+			}
+
+			input{
+				font-size: inherit;
+			}
+
+
+			.divToggler{
+				font-size: 100px;
+				text-transform: capitalize;
+			}
+
+			.onCanvas{
+				background-color:inherit;
+				margin-top: 0;
+				margin-bottom: 0;
+				color:inherit;
+				height: 100%;
+				width: 500px;
+				font-size: 50px;
+			}
+
+			#addPlanetButton{
+				display: none;
+
+			}
+
+			button{
+				padding: 20px;
+				border: 1px solid silver;
 			}
 		</style>
 	</head>
@@ -77,6 +180,116 @@
 			        </tr>
 			    </table>
 			</div>
+
+			<div class="divToggler" onClick="toggle(this.nextSibling);">Position</div>
+		 <div id="Position" class="tabcontent">
+	      <table>
+	        <tr class="inputField">
+	          <td>Position X</td>
+	          <td><input type="number" id="positionX" class="measure" name="positionX" placeholder="Planet positionX"></td>
+	        </tr> <tr class="inputField">
+	          <td>position Y</td>
+	          <td><input type="number" id="positionY" class="measure" name="positionY" placeholder="Planet positionY"></td>
+	        </tr> <tr class="inputField">
+	          <td>position Z</td>
+	          <td><input type="number" id="positionZ" class="measure" name="positionZ" placeholder="Planet positionZ"></td>
+	        </tr>
+	      </table>
+	      <button class="onCanvas" id="addPlanetButton" type="button">Add planet</button>
+	    </div>
+		
+			<div class="divToggler" onClick="toggle(this.nextSibling);">Motion</div>
+		 <div id="Motion" class="tabcontent">
+	      <table>
+	        <tr class="inputField">
+	          <td>Speed X</td>
+	          <td><input type="number" id="speedX" class="measure" name="speedX" placeholder="Planet speedX"><div class="unitOfMeasure"> km/s</div></td>
+	        </tr> <tr class="inputField">
+	          <td>Speed Y</td>
+	          <td><input type="number" id="speedY" class="measure" name="speedY" placeholder="Planet speedY"><div class="unitOfMeasure"> km/s</div></td>
+	        </tr> <tr class="inputField">
+	          <td>Speed Z</td>
+	          <td><input type="number" id="speedZ" class="measure" name="speedZ" placeholder="Planet speedZ"><div class="unitOfMeasure"> km/s</div></td>
+	        </tr>
+	      </table>
+	    </div>
+
+
+	    <div class="divToggler" onClick="toggle(this.nextSibling);">Composition</div>
+	     <div id="Composition" class="tabcontent" class="slidecontainer">
+      <table>
+        <tr>
+          <td>Iron </td>
+          <td> - </td>
+          <td><input id="ironRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
+          <td> + </td>
+          <td> <p>Value: <span id="ironValue"></span></p></td>
+        </tr>
+        <tr>
+          <td>Silicate </td>
+          <td> - </td>
+          <td><input id = "silicateRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
+          <td> + </td>
+          <td> <p>Value: <span id="silicateValue"></span></p></td>
+        </tr>
+        <tr>
+          <td>Water </td>
+          <td> - </td>
+          <td><input id = "waterRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
+          <td> + </td>
+          <td> <p>Value: <span id="waterValue"></span></p></td>
+        </tr>
+        <tr>
+          <td>Hidrogen </td>
+          <td> - </td>
+          <td><input id = "hidrogenRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
+          <td> + </td>
+          <td> <p>Value: <span id="hidrogenValue"></span></p></td>
+        </tr>
+      </table>
+  </div>
+<div class="divToggler" onClick="toggle(this.nextSibling);">Temperature</div>
+   <div id="Temperature" class="tabcontent">
+      <table>
+        <tr class="inputField">
+          <td>Surface Temperature</td>
+          <td><input type="number" id="temperature" class="measure" name="temperature" placeholder="Planet temperature"><div class="unitOfMeasure"> °C</div></td>
+        </tr>
+        <tr class="inputField">
+          <td>Avarage Albedo</td>
+          <td><input type="number" id="albedo" name="Albedo" placeholder="Albedo" step = 0.01 min = 0 max = 1></td>
+        </tr>
+        <tr class="inputField">
+          <td>Infrared Emissivity</td>
+          <td><input type="number" id="emissivity" name="emissivity" placeholder="Infrared emissivity" min = 0 max = 1 step = 0.01></td>
+        </tr>
+      </table>
+</div>
+<div class="divToggler" onClick="toggle(this.nextSibling);">Actions</div>
+<div id="Actions" class="tabcontent">
+      <table>
+        <tr>
+          <td><button class="onCanvas" type="button">Delete this Planet</button>
+        </tr>
+        <tr>
+          <td><button class="onCanvas" type="button" disabled>Auto Orbit</button>
+        </tr>
+        <tr>
+          <td><button class="onCanvas" type="button">Zero Velocity</button>
+        </tr> 
+
+      </table>
+
+    </div>
+		</div>
+
+
+		
+
+		<div id="addPlanet">
+			<select class="onCanvas" id="selectPlanet"></select>
+			<button class="onCanvas" onclick="createPlanet();">Crea Pianeta</button>
+			<button class="onCanvas" id="changeMode" onclick="changeMode(this);">Edit Mode</button>
 		</div>
 		
 		<script src="3dLib/js/three.js"></script>
@@ -91,25 +304,129 @@
 			var graphicFunctions;
 			var gravityFunctions;
 			var objectGenerators;
+			var planets;
+			var setMode = 0;
 			function onLoad() {
+
 				graphicFunctions = startRendering(document.getElementById("container"), {tailPoints: 500, showCenterSphere: false});
 				gravityFunctions = initGravity();
 				graphicFunctions.loadTextures(textureNames, function() {
 					objectGenerators = getObjectGenerators();
-					/*gravityFunctions.addObject(textures.saturn, 2, 100, 0, 0, 100, 0, 0, 0, null, showInfo);
-					gravityFunctions.addObject(textures.earth, 2, 100, 0, 0, 150, 0, 0, 0, null, showInfo);
-					gravityFunctions.addObject(textures.mars, 2, 100, 0, 0, 250, 0, 0, 0, null, showInfo);
-					gravityFunctions.addObject(textures.sun2, 12, 600000, 0, 0, 0, 0, 0, 0, 0xffffff, showInfo);*/
-					gravityFunctions.addObjectFromModel(objectGenerators.sun, 1000, 0, 0, 0, 0, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.blackhole, 0, 0, 0, 0, 0, 0, showInfo);
+					planets	= [
+						{name: "Sun",objectGenerator:objectGenerators.sun},
+						{name: "Venus",objectGenerator:objectGenerators.venus},
+						{name: "Uranus",objectGenerator:objectGenerators.uranus},
+						{name: "Saturn",objectGenerator:objectGenerators.saturn},
+						{name: "Neptune",objectGenerator:objectGenerators.neptune},
+						{name: "Moon",objectGenerator:objectGenerators.moon},
+						{name: "Mercury",objectGenerator:objectGenerators.mercury},
+						{name: "Jupiter",objectGenerator:objectGenerators.jupiter},
+						{name: "Mars",objectGenerator:objectGenerators.mars},
+						{name: "Earth",objectGenerator:objectGenerators.earth},
+						{name: "Blackhole",objectGenerator:objectGenerators.blackhole}
+						
+					];
+					var planetSelector = document.getElementById("selectPlanet");
+					var html = "";
+					for(var i = 0; i < planets.length; i++){
+							html+="<option value="+i+">"+planets[i].name+"</option>";
+					}
+					planetSelector.innerHTML = html;
+					gravityFunctions.addObjectFromModel(objectGenerators.saturn, 0, 0, 500, 0, 200, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.earth, 0, 0, 1000, 200, 0, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.mars, 0, 0, 25001, 0, 200, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.sun, 0, 0, 0, 0, 0, 0, showInfo);
+					/*gravityFunctions.addObjectFromModel(objectGenerators.blackhole, 0, 0, 0, 0, 0, 0, showInfo);*/
 					gravityFunctions.turnOnGravity();
 				});
+
+
+				var outputs = [];
+      var sliders = [];
+      /*var values = [];*/
+
+      sliders[0] = document.getElementById("ironRange");
+      outputs[0] = document.getElementById("ironValue");
+      outputs[0].innerHTML = sliders[0].value;
+
+      sliders[1] = document.getElementById("silicateRange");
+      outputs[1] = document.getElementById("silicateValue");
+      outputs[1].innerHTML = sliders[1].value;
+
+      sliders[2] = document.getElementById("waterRange");
+      outputs[2] = document.getElementById("waterValue");
+      outputs[2].innerHTML = sliders[2].value;
+
+      sliders[3] = document.getElementById("hidrogenRange");
+      outputs[3] = document.getElementById("hidrogenValue");
+      outputs[3].innerHTML = sliders[3].value;
+
+
+
+      for(var i = 0  ; i < sliders.length; i++ ){
+        sliders[i].oninput = (function(i){ return function(){
+          var oldValue = parseFloat(outputs[i].innerHTML);
+          var difference = parseFloat(sliders[i].value) - oldValue;
+          console.log("difference", difference);
+          var vals = [];
+          fullSum = 0;
+          for(var j = 0; j < sliders.length; j++)
+            if(j != i)
+              fullSum += parseFloat(sliders[j].value);
+          for(var j = 0; j < sliders.length; j++){
+            if(j!=i){
+              var thisDiff = fullSum == 0?difference/3:difference * parseFloat(sliders[j].value) / fullSum;
+              vals[j] = parseFloat(sliders[j].value) - thisDiff;
+            }
+          }
+          console.log(vals);
+          for(var j = 0; j < sliders.length; j++){
+            if(j!=i){
+              sliders[j].value = vals[j];
+            }
+            outputs[j].innerHTML = sliders[j].value.substr(0,4);
+          }
+
+        };})(i);
+
+      }
+
+				
 			}
 			function showInfo(object) {
 				//TODO: show menu
 				//Hint: u can use the variable object to store data
+				var menu = document.getElementById("menu");
+				var container = document.getElementById("container");
+				var selectPlanetMenu = document.getElementById("selectPlanet");
+				console.log(object, menu);
+				container.style.right = "1600px";
+				selectPlanet.style.right ="1600px"
+				menu.style.display="inline-block";
 				graphicFunctions.toggleResize(); // <---   IMPORTANT
 			}
+
+			function changeMode(){
+				var o = document.getElementById("changeMode");
+				if(setMode == 0){
+					graphicFunctions.setMode(1);
+					setMode = 1;
+					gravityFunctions.turnOffGravity();
+					o.innerHTML = "Navigation Mode";
+				}else{
+					graphicFunctions.setMode(0);
+					setMode = 0;
+					gravityFunctions.turnOnGravity();
+					o.innerHTML = "Edit Mode";
+				}
+			}
+
+			function createPlanet(){
+				if(setMode==0)changeMode();
+				console.log(graphicFunctions.getControlsPosition());
+			}
+
+
 			/*var menuToggled = false;
 			function toggleMenu(){
 				var menu = document.getElementById("menu");
@@ -126,8 +443,9 @@
 					menuToggled = true;
 				}
 			}
-
+			
 			function toggle(obj){
+				console.log(o)
 				if(obj.style.display!="none")obj.style.display="none";
 				else obj.style.display = "block";
 			}*/

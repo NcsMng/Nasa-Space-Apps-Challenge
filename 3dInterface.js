@@ -5,7 +5,7 @@ var SKYBOX;
 function startRendering(element, args) {
 	var settings;
 	var tailPoints, _3DObjectsEvents = {};
-	var scene, camera, renderer, controls, sceneCenterSphere, models = [], objects = [], controlMode, skyBox, moveControlOffset, moveCameraOffset;
+	var scene, camera, renderer, controls, sceneCenterSphere, models = [], objects = [], controlMode, skyBox, moveControlOffset, moveCameraOffset, controlsTarget;
 	
 	function main() {
 		settings = getArgsOrDefault({
@@ -223,6 +223,9 @@ function startRendering(element, args) {
 	function getGraphicFunctions() {
 		var objectId = 1;
 		var cameraFollowObject = null;
+		function getControlsPosition() {
+			return controlsTarget;
+		}
 		function addObjectFromModel(objectGenerator, x, y, z) {
 			var radius = objectGenerator.radius;
 			var texture = objectGenerator.mainTexture;
@@ -379,6 +382,7 @@ function startRendering(element, args) {
 				startNavigationMode();
 			}
 			else if (mode == 1){
+				controlsTarget = controls.target;
 				startEditingMode();
 			}
 
@@ -418,7 +422,7 @@ function startRendering(element, args) {
 			controls.enableZoom = false;
 			controls.enableRotate = false;
 		}
-		return {addObject, loadTexture, loadTextures, setMode, setCameraCenter, lockCameraControls, addObjectFromModel, toggleResize: onResize};
+		return {addObject, loadTexture, loadTextures, setMode, setCameraCenter, lockCameraControls, addObjectFromModel, toggleResize: onResize, getControlsPosition};
 	}
 	var textureLoader = new THREE.TextureLoader();
 	function loadTexture(textureName, onComplete) {

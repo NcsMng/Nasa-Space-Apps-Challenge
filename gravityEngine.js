@@ -9,6 +9,7 @@ function initGravity() {
 	function manageObject(object, mass, speedX, speedY, speedZ, onClick) {
 		object.mass = mass;
 		object.speed = {x: speedX, y: speedY, z: speedZ};
+		object.onClick = onClick;
 		object.events.onClick = function() {
 			if (!object.cameraFollow) {
 				console.log(onClick);
@@ -141,11 +142,11 @@ function initGravity() {
 				//TODO: compute radius
 				var newObject;
 				if (collisions[i].object1.objectGenerator != null) {
-					newObject = createObjectFromModel(collisions[i].object1.objectGenerator, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z);
+					newObject = createObjectFromModel(collisions[i].object1.objectGenerator, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z, collisions[i].object1.onClick);
 					newObject.radius = finalRadius;
 					newObject.mass = finalMass;
 				} else {
-					newObject = createObject(collisions[i].object1.texture, finalRadius,finalMass, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z, collisions[i].object1.lightSourceColor);
+					newObject = createObject(collisions[i].object1.texture, finalRadius,finalMass, collisions[i].object1.x, collisions[i].object1.y, collisions[i].object1.z, collisions[i].object1.speed.x, collisions[i].object1.speed.y, collisions[i].object1.speed.z, collisions[i].object1.lightSourceColor,collisions[i].object1.onClick);
 				}
 				newObjectArray.push(newObject);
 			}
