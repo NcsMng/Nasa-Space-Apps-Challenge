@@ -1,4 +1,4 @@
-var textureNames = ["earth", "sun", "sun2", "moon", "venus", "mercury", "mars", "jupiter", "saturn", "smokeparticle"];
+var textureNames = ["earth", "sun", "sun2", "moon", "venus", "mercury", "mars", "jupiter", "saturn", "smokeparticle", "skyBox"];
 var textures = {};
 
 function startRendering(element, args) {
@@ -69,21 +69,25 @@ function startRendering(element, args) {
 		var computedStyle = window.getComputedStyle(element);
 		var width = parseInt(computedStyle.getPropertyValue('width'));
 		var height = parseInt(computedStyle.getPropertyValue('height'));
-		console.log(height);
 		scene = new THREE.Scene();
 		camera = new THREE.PerspectiveCamera(75, width /  height, 0.1, 10000000);
 		renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
 		renderer.setSize(width, height);
-		element.addEventListener('resize', onResize, false);
-		function onResize(){
-			camera.aspect = width / height;
-			camera.updateProjectionMatrix();
-			renderer.setSize(width, height);
-		}
+		window.addEventListener('resize', onResize, false);
 		element.appendChild(renderer.domElement);
 		camera.position.z = 175;
 		camera.position.x = 0;
 		camera.position.y = 0;
+		scene.add(new THREE.AmbientLight(0x202020));
+	}
+	
+	function onResize(){
+		var computedStyle = window.getComputedStyle(element);
+		var width = parseInt(computedStyle.getPropertyValue('width'));
+		var height = parseInt(computedStyle.getPropertyValue('height'));
+		camera.aspect = width / height;
+		camera.updateProjectionMatrix();
+		renderer.setSize(width, height);
 	}
 	
 	function animate() {
@@ -183,7 +187,6 @@ function startRendering(element, args) {
 		controls.enableZoom = true;
 		controls.enablePan = false;
 		controls.enableRotate = true;
-		//controls.enableDamping = true;
 		controls.minDistance = 2;
 		controls.maxDistance = 10000;
 		controls.enableDamping = true;
@@ -207,8 +210,9 @@ function startRendering(element, args) {
 	}
 	
 	function createSkyBox() {
-		textures.skyBox.meshLambertMaterial.mapping = THREE.UVMapping;
-		skyBox = new THREE.Mesh(new THREE.SphereGeometry(10000000, 4, 4), textures.skyBox.meshLambertMaterial);
+		var material = new THREE.MeshBasicMaterial({map: textures.skyBox.baseMap});
+		material.mapping = THREE.UVMapping;
+		skyBox = new THREE.Mesh(new THREE.SphereGeometry(10000000, 4, 4), material);
 		skyBox.material.side = THREE.DoubleSide;
 		scene.add(skyBox);
 	}
@@ -216,6 +220,39 @@ function startRendering(element, args) {
 	function getGraphicFunctions() {
 		var objectId = 1;
 		var cameraFollowObject = null;
+		function addObjectFromModel(objectGenerator, x, y, z) {
+			var radius = objectGenerator.radius;
+			var texture = objectGenerator.mainTexture;
+			var lightSourceColor = objectGenerator.lightSourceColor;
+			if (x == null)
+				x = 0;
+			if (y == null)
+				y = 0;
+			if (z == null)
+				z = 0;
+			var id = objectId++;
+			var model = new THREE.Mesh(new THREE.SphereGeometry(radius + 3, 32, 32), new THREE.MeshBasicMaterial({transparent: true, opacity: 0}));
+			model.renderOrder = 3;
+			objectGenerator.generate(model, objectGenerator, {
+				setAsLightSource: function() {
+					var light = new THREE.PointLight(lightSourceColor, 1.5);
+					model.add(light);
+					var spriteMap = new THREE.TextureLoader().load("images/glow.png");
+					var spriteMaterial = new THREE.SpriteMaterial({map: spriteMap, color: lightSourceColor});
+					lightSprite = new THREE.Sprite(spriteMaterial);
+					lightSprite.scale.set(radius * 4, radius * 3.5, 1);
+					lightSprite.renderOrder = 2;
+					model.add(lightSprite);
+				}
+			});
+			var object = getNewObject(model, id, texture, radius, lightSourceColor, x, y, z, objectGenerator);
+			model.name = id;
+			model.position.set(x, y, z);
+			scene.add(model);
+			models.push(model);
+			objects.push(object);
+			return object;
+		}
 		function addObject(texture, radius, x, y, z, lightSourceColor) {
 			var isALightSource = lightSourceColor != null;
 			if (x == null)
@@ -229,20 +266,12 @@ function startRendering(element, args) {
 				return;
 			}
 			var id = objectId++;
-			var planet = new THREE.Mesh(new THREE.SphereGeometry(radius, 32, 32), isALightSource ? new THREE.MeshBasicMaterial({map: texture.baseMap, opacity: 0.5}) : texture.meshLambertMaterial);
 			var model = new THREE.Mesh(new THREE.SphereGeometry(radius + 3, 32, 32), new THREE.MeshBasicMaterial({transparent: true, opacity: 0}));
-			model.renderOrder = 3;
+			var planet = new THREE.Mesh(new THREE.SphereGeometry(radius, 32, 32), isALightSource ? new THREE.MeshBasicMaterial({map: texture.baseMap, opacity: 0.5}) : texture.meshLambertMaterial);
 			planet.material.side = THREE.DoubleSide;
-			_3DObjectsEvents[id] = {};
-			var tailFunctions;
-			if (settings.showTail)
-				tailFunctions = createTail(x, y, z);
-			else
-				tailFunctions = {addPoint: function(x, y, z) {}};
-			var cameraLock = false;
-			var cameraDistance = radius * 2;
-			var lightSprite;
 			model.add(planet);
+			model.renderOrder = 3;
+			var lightSprite;
 			if (isALightSource) {
 				var light = new THREE.PointLight(lightSourceColor, 1.5);
 				model.add(light);
@@ -253,8 +282,24 @@ function startRendering(element, args) {
 				lightSprite.renderOrder = 2;
 				model.add(lightSprite);
 			}
-			
-			var object = {id, texture, radius, cameraDistance, lightSourceColor, cameraFollow: false, x, y, z, events: _3DObjectsEvents[id],
+			var object = getNewObject(model, id, texture, radius, lightSourceColor, x, y, z, null);
+			model.name = id;
+			model.position.set(x, y, z);
+			scene.add(model);
+			models.push(model);
+			objects.push(object);
+			return object;
+		}
+		function getNewObject(model, id, texture, radius, lightSourceColor, x, y, z, objectGenerator) {
+			var tailFunctions;
+			if (settings.showTail)
+				tailFunctions = createTail(x, y, z);
+			else
+				tailFunctions = {addPoint: function(x, y, z) {}};
+			var cameraDistance = radius * 2;
+			var cameraLock = false;
+			_3DObjectsEvents[id] = {};
+			var object = {id, texture, radius, cameraDistance, lightSourceColor, objectGenerator, cameraFollow: false, x, y, z, events: _3DObjectsEvents[id],
 					setPosition: function(x, y, z) {
 						model.position.set(x, y, z);
 						if (object.cameraFollow) {
@@ -313,11 +358,6 @@ function startRendering(element, args) {
 						model.name = id;
 					}
 				};
-			model.name = id;
-			model.position.set(x, y, z);
-			scene.add(model);
-			models.push(model);
-			objects.push(object);
 			return object;
 		}
 		function loadTextures(textureName, onComplete) {
@@ -372,7 +412,7 @@ function startRendering(element, args) {
 			controls.enableZoom = false;
 			controls.enableRotate = false;
 		}
-		return {addObject, loadTexture, loadTextures, setMode, setCameraCenter, lockCameraControls};
+		return {addObject, loadTexture, loadTextures, setMode, setCameraCenter, lockCameraControls, addObjectFromModel, toggleResize: onResize};
 	}
 	var textureLoader = new THREE.TextureLoader();
 	function loadTexture(textureName, onComplete) {

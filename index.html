@@ -30,19 +30,22 @@
 		<script src="3dLib/loaders/GLTFLoader.js"></script>
 		<script src="3dLib/controls/OrbitControls.js"></script>
 		<script src="3dLib/controls/DragControls.js"></script>
+		<script src="objectGenerators.js"></script>
 		<script src="3dInterface.js"></script>
 		<script src="gravityEngine.js"></script>
 		<script>
 			var graphicFunctions;
 			var gravityFunctions;
+			var objectGenerators;
 			function onLoad() {
 				graphicFunctions = startRendering(document.getElementById("container"), {tailPoints: 500, showCenterSphere: false});
 				gravityFunctions = initGravity();
 				graphicFunctions.loadTextures(textureNames, function() {
+					objectGenerators = getObjectGenerators();
 					gravityFunctions.addObject(textures.saturn, 2, 100, 0, 0, 100, 70, 0, 0, null);
 					gravityFunctions.addObject(textures.earth, 2, 100, 0, 0, 150, 60, 0, 0, null);
 					gravityFunctions.addObject(textures.mars, 2, 100, 0, 0, 250, 50, 0, 0, null);
-					gravityFunctions.addObject(textures.sun2, 12, 600000, 0, 0, 0, 0, 0, 0, 0xffffff);
+					gravityFunctions.addObjectFromModel(objectGenerators.sun, 0, 0, 0, 0, 0, 0);
 					gravityFunctions.turnOnGravity();
 				});
 			}
