@@ -1,5 +1,6 @@
-var textureNames = ["earth", "sun", "sun2", "moon", "venus", "mercury", "mars", "jupiter", "saturn", "smokeparticle", "skyBox"];
+var textureNames = ["earth", "sun", "sun2", "moon", "venus", "mercury", "mars", "jupiter", "saturn", "smokeparticle"];
 var textures = {};
+var SKYBOX;
 
 function startRendering(element, args) {
 	var settings;
@@ -15,7 +16,9 @@ function startRendering(element, args) {
 			interactionMode: 0
 		});
 		init();
-		loadTexture("skyBox", createSkyBox);
+		SKYBOX = new THREE.CubeTextureLoader().load(['images/px.png', 'images/nx.png', 'images/py.png', 'images/ny.png', 'images/pz.png', 'images/nz.png']);
+		SKYBOX.mapping = THREE.CubeRefractionMapping;
+		scene.background = SKYBOX;
 		manageObjectEvents();
 		
 		if (settings.interactionMode == 0)
@@ -234,8 +237,8 @@ function startRendering(element, args) {
 			var model = new THREE.Mesh(new THREE.SphereGeometry(radius + 3, 32, 32), new THREE.MeshBasicMaterial({transparent: true, opacity: 0}));
 			model.renderOrder = 3;
 			objectGenerator.generate(model, objectGenerator, {
-				setAsLightSource: function() {
-					var light = new THREE.PointLight(lightSourceColor, 1.5);
+				setAsLightSource: function(intensity) {
+					var light = new THREE.PointLight(lightSourceColor, intensity);
 					model.add(light);
 					var spriteMap = new THREE.TextureLoader().load("images/glow.png");
 					var spriteMaterial = new THREE.SpriteMaterial({map: spriteMap, color: lightSourceColor});
@@ -243,6 +246,9 @@ function startRendering(element, args) {
 					lightSprite.scale.set(radius * 4, radius * 3.5, 1);
 					lightSprite.renderOrder = 2;
 					model.add(lightSprite);
+				},
+				getCamera: function() {
+					return camera;
 				}
 			});
 			var object = getNewObject(model, id, texture, radius, lightSourceColor, x, y, z, objectGenerator);
