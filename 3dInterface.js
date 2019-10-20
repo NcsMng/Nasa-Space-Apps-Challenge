@@ -1,4 +1,4 @@
-var textureNames = ["earth", "sun", "sun2", "moon", "venus", "mercury", "mars", "jupiter", "saturn", "smokeparticle"];
+var textureNames = ["earth", "jupiter", "mars", "mercury", "moon", "neptune", "saturn", "sun", "sun2", "uranus", "venus"];
 var textures = {};
 var SKYBOX;
 
