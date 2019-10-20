@@ -4,6 +4,11 @@
 		<meta charset="utf-8">
 		<title>My first three.js app</title>
 		<style>
+
+			#Creator{
+				display: none;
+			}
+
 			*{
 				outline: none;
 			}
@@ -44,7 +49,6 @@
 				position: fixed;
 				z-index: 2;
 				top: 0;
-				right: 0;
 				left: 0;
 				height: 2em;
 			}
@@ -101,6 +105,10 @@
 				font-size: inherit;
 			}
 
+			option{
+				color: black;
+			}
+
 
 			.divToggler{
 				font-size: inherit;
@@ -129,6 +137,10 @@
 	<body onload="onLoad()">
 		<div id="container"></div>
 		<div id="menu">
+			<div id="Creator">
+				<div class="divToggler" id="CreateTitle">Create Planet</div>
+				<select class="onCanvas" id="selectPlanet"></select>
+			</div>
 			<div class="divToggler" onClick="toggle(this.nextSibling);">Overview</div>
 			<div id="Overview" class="tabcontent">
 			    <table>
@@ -164,7 +176,7 @@
 			            <td>Surface Temperatures</td>
 			            <td>
 			                <input type="number" id="temperature" class="measure" name="temperature" placeholder="Planet temperature">
-			                <div class="unitOfMeasure"> °C</div>
+			                <div class="unitOfMeasure">°C</div>
 			            </td>
 			        </tr>
 
@@ -192,7 +204,6 @@
 	          <td><input type="number" id="positionZ" class="measure" name="positionZ" placeholder="Planet positionZ"></td>
 	        </tr>
 	      </table>
-	      <button class="onCanvas" id="addPlanetButton" type="button">Add planet</button>
 	    </div>
 		
 			<div class="divToggler" onClick="toggle(this.nextSibling);">Motion</div>
@@ -274,7 +285,12 @@
         <tr>
           <td><button class="onCanvas" type="button">Zero Velocity</button>
         </tr> 
-
+	      <tr>
+          <td><button class="onCanvas" id="addPlanetButton" onClick="finalizeCreatePlanet();" type="button">Add planet</button>
+          	</tr> 
+          	 <tr>
+          <td><button class="onCanvas" type="button" onclick="UnlockCamera()">Unlock Camera</button>
+        </tr>
       </table>
 
     </div>
@@ -284,8 +300,7 @@
 		
 
 		<div id="addPlanet">
-			<select class="onCanvas" id="selectPlanet"></select>
-			<button class="onCanvas" onclick="createPlanet();">Crea Pianeta</button>
+			<button class="onCanvas" onclick="createPlanet();">Create Planet</button>
 			<button class="onCanvas" id="changeMode" onclick="changeMode(this);">Edit Mode</button>
 		</div>
 		
@@ -421,7 +436,31 @@
 
 			function createPlanet(){
 				if(setMode==0)changeMode();
-				console.log(graphicFunctions.getControlsPosition());
+				document.getElementById("addPlanetButton").style.display="block";
+				document.getElementById("Creator").style.display="block";
+				showInfo(null);
+
+			}
+
+			function finalizeCreatePlanet(){
+				var position = {
+					x:parseFloat(document.getElementById("positionX").value),
+					y:parseFloat(document.getElementById("positionY").value),
+					z:parseFloat(document.getElementById("positionZ").value)
+				}
+
+				var spd = {
+					x:parseFloat(document.getElementById("speedX").value),
+					y:parseFloat(document.getElementById("speedY").value),
+					z:parseFloat(document.getElementById("speedZ").value),
+				}
+
+				var type = parseInt(document.getElementById("selectPlanet").value);
+				console.log(type,planets[type]);
+				gravityFunctions.addObjectFromModel(planets[type].objectGenerator,position.x,position.y,position.z,spd.x,spd.y,spd.z,showInfo);
+				document.getElementById("addPlanetButton").style.display="none";
+				document.getElementById("Creator").style.display="none";
+
 			}
 
 
