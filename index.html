@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html> 
 	<head>
+		<link rel='icon' href='favicon.ico' type='image/x-icon'/ >
 		<meta charset="utf-8">
-		<title>My first three.js app</title>
+		<title>Equilibrium</title>
 		<style>
 
 			#Creator{
@@ -347,9 +348,13 @@
 					}
 					planetSelector.innerHTML = html;
 					gravityFunctions.addObjectFromModel(objectGenerators.sun, 0, 0, 0, 0, 0, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.mars, 500, 0, 0, 0, 90, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.mars, 500, 0, 0, 0, 80, 0, showInfo);
+
+					gravityFunctions.addObjectFromModel(objectGenerators.venus, 600, 0, 0, 0, 80, 0, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.saturn, 1000, 0, 0, 0, 50, 0, showInfo);
 					earth = gravityFunctions.addObjectFromModel(objectGenerators.earth, 750, 0, 0, 0, 70, 0, showInfo);
 					gravityFunctions.addObjectFromModel(objectGenerators.jupiter, 1500, 0, 0, 0, 30, 0, showInfo);
+
 					gravityFunctions.turnOnGravity();
 				});
 
