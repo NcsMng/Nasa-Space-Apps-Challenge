@@ -9,7 +9,7 @@
 			}
 			body, html {
 				font-family: Arial;
-				font-size: 50px;
+				font-size: 1vw;
 				color:white;
 				margin: 0;
 				overflow: hidden;
@@ -28,16 +28,16 @@
 				position: fixed;
 			}
 			#menu {
-				padding-right: 50px;
+				padding-right: 1em;
 				overflow: auto;
-				font-size: 75px;
+				font-size: inherit;
 				background-color: black;
 				position: fixed;
 				right: 0;
 				top: 0;
 				bottom: 0;
 				display: none;
-				width: 1600px;
+				width: 25em;
 			}
 			#addPlanet{
 				background-color: rgba(0,0,0,0);
@@ -46,23 +46,26 @@
 				top: 0;
 				right: 0;
 				left: 0;
-				height: 100px;
+				height: 2em;
+			}
+			#addPlanet select option {
+				color: #000;
 			}
 			#addPlanet select{
-				margin-left: 10px;
+				margin-left: 0.5em;
 				background-color:inherit;
 				color:inherit;
 				height: 100%;
-				width: 500px;
-				font-size: 50px;
+				width: 10em;
+				font-size: inherit;
 			}
 
 			.inputField td:nth-child(1){
-				width: 560px;
+				width: 5em;
 			}
 
 			input[type="range"]{
-				width: 100%
+				width: 100%;
 			}
 
 			button{
@@ -75,18 +78,14 @@
 			td{
 
 				position: relative;
-				padding: 20px;
+				padding: 0.5em;
 				font-size: inherit;
 			}
 
 			td input{
 				z-index: 0;
-				border-radius: 20px;
-				padding: 20px;
-			}
-
-			#Actions button{
-				width: 650px;
+				border-radius: 0.3em;
+				padding: 0.3em;
 			}
 
 			.unitOfMeasure{
@@ -95,7 +94,7 @@
 				position: absolute;
 				top: 50%;
 				transform: translateY(-50%);
-				right: 50px;
+				right: 1em;
 			}
 
 			input{
@@ -104,7 +103,7 @@
 
 
 			.divToggler{
-				font-size: 100px;
+				font-size: inherit;
 				text-transform: capitalize;
 			}
 
@@ -113,18 +112,16 @@
 				margin-top: 0;
 				margin-bottom: 0;
 				color:inherit;
-				height: 100%;
-				width: 500px;
-				font-size: 50px;
+				width: 10em;
+				font-size: inherit;
 			}
 
 			#addPlanetButton{
 				display: none;
-
 			}
 
 			button{
-				padding: 20px;
+				padding: 0.5em;
 				border: 1px solid silver;
 			}
 		</style>
@@ -400,9 +397,10 @@
 				var container = document.getElementById("container");
 				var selectPlanetMenu = document.getElementById("selectPlanet");
 				console.log(object, menu);
-				container.style.right = "1600px";
-				selectPlanet.style.right ="1600px"
+				container.style.right = "25em";
+				selectPlanet.style.right ="25em"
 				menu.style.display="inline-block";
+				
 				graphicFunctions.toggleResize(); // <---   IMPORTANT
 			}
 
