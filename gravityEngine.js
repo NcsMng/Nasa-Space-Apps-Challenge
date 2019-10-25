@@ -11,9 +11,13 @@ function initGravity() {
 		object.mass = mass;
 		object.speed = {x: speedX, y: speedY, z: speedZ};
 		object.onClick = onClick;
-		object.events.onClick = function() {
-			if (!object.cameraFollow) {
-				console.log(onClick);
+		object.events.dblClick = function() {
+			if (lastObjectInFocus != null)
+				lastObjectInFocus.catchEvents();
+			object.ignoreEvents();
+			lastObjectInFocus = object;
+			object.follow();
+			/*if (!object.cameraFollow) {
 				if (onClick != null)
 					onClick(object);
 				turnOffGravity();
@@ -22,14 +26,13 @@ function initGravity() {
 					lastObjectInFocus.catchEvents();
 				object.ignoreEvents();
 				lastObjectInFocus = object;
-				console.log(object);
 				graphicFunctions.setCameraCenter(object.x, object.y, object.z, object.cameraDistance, function() {
 					object.follow();
 					object.lockCamera();
 					turnOnGravity();
 					unlockCamera = object.unlockCamera;
 				});
-			}
+			}*/
 		};
 		object.stopGravity = function(){
 			for(var i = 0; i < objects.length; i++){
@@ -115,8 +118,6 @@ function initGravity() {
 								else
 									x -= Fh * Math.sqrt(1 - angle2 * angle2);
 							}
-							collisions[j] = null;
-						} else if((d > thisObj.radius || d > objects[j].radius) && !(Math.abs(thisObj.speed.x)<0.001&&Math.abs(thisObj.speed.y)<0.001&&Math.abs(thisObj.speed.z)<0.001)){
 							collisions[j] = null;
 						}else{
 							if (thisObj.mass > objects[j].mass)

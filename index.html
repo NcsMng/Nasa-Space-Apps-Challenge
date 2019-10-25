@@ -5,18 +5,120 @@
 		<meta charset="utf-8">
 		<title>Equilibrium</title>
 		<style>
-
-			#Creator{
+			input[type=range] {
+				-webkit-appearance: none;
+				width: 100%;
+				margin: 0.5em 0;
+				border: none !important;
+				color: inherit !important;
+				background-color: transparent !important;
+				border-radius: none !important;
+				padding: 0 !important;
+			}
+			input[type=range]:focus {
+				outline: none;
+			}
+			input[type=range]::-webkit-slider-runnable-track {
+				width: 100%;
+				height: 0.5em;
+				cursor: pointer;
+				box-shadow: none;
+				background: #414141;
+				border-radius: 0.25em;
+				border: 1px solid #525252;
+			}
+			input[type=range]::-webkit-slider-thumb {
+				box-shadow: none;
+				border: none;
+				height: 1em;
+				width: 1em;
+				border-radius: 0.5em;
+				background: #ca3e47;
+				cursor: pointer;
+				-webkit-appearance: none;
+				margin-top: -0.3em;
+			}
+			input[type=range]:focus::-webkit-slider-runnable-track {
+				background: #414141;
+			}
+			input[type=range]::-moz-range-track {
+				width: 100%;
+				height: 0.5em;
+				cursor: pointer;
+				box-shadow: none;
+				background: #414141;
+				border-radius: 0.25em;
+				border: 1px solid #525252;
+			}
+			input[type=range]::-moz-range-thumb {
+				box-shadow: none;
+				border: none;
+				height: 1em;
+				width: 1em;
+				border-radius: 0.5em;
+				background: #ca3e47;
+				cursor: pointer;
+			}
+			input[type=range]::-ms-track {
+				width: 100%;
+				height: 0.5em;
+				cursor: pointer;
+				background: transparent;
+				border-color: transparent;
+				color: transparent;
+			}
+			input[type=range]::-ms-fill-lower {
+				background: #414141;
+				border: 1px solid #525252;
+				border-radius: 0.5em;
+				box-shadow: none;
+			}
+			input[type=range]::-ms-fill-upper {
+				background: #414141;
+				border: 1px solid #525252;
+				border-radius: 0.5em;
+				box-shadow: none;
+			}
+			input[type=range]::-ms-thumb {
+				box-shadow: none;
+				border: none;
+				height: 1em;
+				width: 1em;
+				border-radius: 0.5em;
+				background: #ca3e47;
+				cursor: pointer;
+				height: 0.5em;
+			}
+			input[type=range]:focus::-ms-fill-upper {
+				background: #414141;
+			}
+			table {
+				width: 100%;
+			}
+			#Creator {
 				display: none;
 			}
-
-			*{
+			.tabContent {
+				margin: 1em;
+			}
+			* {
 				outline: none;
+				box-sizing: border-box;
+				-webkit-user-drag: none;
+				-khtml-user-drag: none;
+				-moz-user-drag: none;
+				-o-user-drag: none;
+				user-drag: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				cursor: default;
 			}
 			body, html {
 				font-family: Arial;
-				font-size: 1vw;
-				color:white;
+				font-size: 0.8vw;
+				color: #f0f0f0;
 				margin: 0;
 				overflow: hidden;
 				width: 100%;
@@ -37,15 +139,16 @@
 				padding-right: 1em;
 				overflow: auto;
 				font-size: inherit;
-				background-color: black;
+				background-color: #313131;
 				position: fixed;
 				right: 0;
 				top: 0;
 				bottom: 0;
 				display: none;
-				width: 25em;
+				width: 28em;
+				padding: 1em;
 			}
-			#addPlanet{
+			#addPlanet {
 				background-color: rgba(0,0,0,0);
 				position: fixed;
 				z-index: 2;
@@ -53,85 +156,179 @@
 				left: 0;
 				height: 2em;
 			}
-			#addPlanet select option {
-				color: #000;
-			}
-			#addPlanet select{
-				margin-left: 0.5em;
-				background-color:inherit;
-				color:inherit;
+			#addPlanet select {
+				margin: 1em;
+				background-color: inherit;
+				color: inherit;
 				height: 100%;
 				width: 10em;
-				font-size: inherit;
+				font-size: 2em;
 			}
-
-			.inputField td:nth-child(1){
-				width: 5em;
+			.inputField td:nth-child(1) {
+				width: 10em;
 			}
-
-			input[type="range"]{
-				width: 100%;
-			}
-
-			button{
+			button {
 				font-size: inherit; 
 			}
-			td input{
+			td input {
 				width:100%;
 			}
-
-			td{
-
+			td {
 				position: relative;
 				padding: 0.5em;
 				font-size: inherit;
 			}
-
-			td input{
+			td input {
 				z-index: 0;
-				border-radius: 0.3em;
-				padding: 0.3em;
 			}
-
-			.unitOfMeasure{
-				color: black;
+			input[type='number'] {
+				-moz-appearance:textfield;
+			}
+			input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+				-webkit-appearance: none;
+			}
+			.withUnitOfMeasure input {
+				padding-right: 3.5em;
+			}
+			.withUnitOfMeasure a {
+				color: inherit;
 				z-index: 50;
 				position: absolute;
 				top: 50%;
 				transform: translateY(-50%);
 				right: 1em;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				cursor: default;
 			}
-
-			input{
+			input {
 				font-size: inherit;
+				border: 1px solid #525252;
+				color: inherit;
+				background-color: #414141;
+				border-radius: 0.2em;
+				padding: 0.5em;
+				-webkit-user-select: text;
+				-moz-user-select: text;
+				-ms-user-select: text;
+				user-select: text;
+				cursor: text;
 			}
-
-			option{
-				color: black;
-			}
-
-
-			.divToggler{
+			.divToggler {
 				font-size: inherit;
 				text-transform: capitalize;
+				margin: 1em;
+				text-align: center;
+				font-size: 1.3em;
 			}
-
-			.onCanvas{
-				background-color:inherit;
+			.onCanvas {
+				background-color: inherit;
 				margin-top: 0;
 				margin-bottom: 0;
-				color:inherit;
+				color: inherit;
 				width: 10em;
 				font-size: inherit;
 			}
-
-			#addPlanetButton{
+			#addPlanetButton {
 				display: none;
 			}
-
-			button{
+			button {
 				padding: 0.5em;
-				border: 1px solid silver;
+				border: 1px solid #525252;
+				cursor: pointer;
+			}
+			#menu button {
+				position: relative;
+				display: inline-block;
+				box-sizing: border-box;
+				border: none;
+				border-radius: 0.24em;
+				padding: 0.5em 1em;
+				box-shadow: 0 0.18em 0.06em -0.12em rgba(0, 0, 0, 0.2), 0 0.12em 0.12em 0 rgba(0, 0, 0, 0.14), 0 0.06em 0.3em 0 rgba(0, 0, 0, 0.12);
+				vertical-align: middle;
+				text-align: center;
+				color: inherit;
+				background-color: #ca3e47;
+				line-height: 1em;
+				cursor: pointer;
+				transition: box-shadow 0.2s;
+				overflow: hidden;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			#menu button::-moz-focus-inner {
+				border: none;
+			}
+			#menu button::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background-color: #ffffff;
+				opacity: 0;
+				transition: opacity 0.2s;
+			}
+			#menu button::after {
+				content: "";
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				border-radius: 50%;
+				padding: 50%;
+				width: 2em;
+				height: 2em;
+				background-color: #ffffff;
+				opacity: 0;
+				transform: translate(-50%, -50%) scale(1);
+				transition: opacity 1s, transform 0.8s;
+			}
+			#menu button:hover {
+				box-shadow: 0 0.12em 0.24em -0.06em rgba(0, 0, 0, 0.2), 0 0.24em 0.3em 0 rgba(0, 0, 0, 0.14), 0 0.06em 0.6em 0 rgba(0, 0, 0, 0.12);
+			}
+			#menu button:hover::before {
+				opacity: 0.08;
+			}
+			#menu button:hover:focus::before {
+				opacity: 0.3;
+			}
+			#menu button:active::after {
+				opacity: 0.32;
+				transform: translate(-50%, -50%) scale(0);
+				transition: transform 0s;
+			}
+			#menu button:disabled {
+				color: rgba(0, 0, 0, 0.38);
+				background-color: rgba(255, 255, 255, 0.12);
+				box-shadow: none;
+				cursor: initial;
+			}
+			#menu button:disabled::before {
+				opacity: 0;
+			}
+			#menu button:disabled::after {
+				opacity: 0;
+			}
+			label {
+				
+			}
+			select {
+				font-size: inherit;
+				border: 1px solid #525252;
+				color: inherit;
+				background-color: #414141;
+				border-radius: 0.2em;
+				padding: 0.5em;
+				width: 100%;
+				text-align: center;
+				cursor: pointer;
 			}
 		</style>
 	</head>
@@ -140,7 +337,7 @@
 		<div id="menu">
 			<div id="Creator">
 				<div class="divToggler" id="CreateTitle">Create Planet</div>
-				<select class="onCanvas" id="selectPlanet"></select>
+				<select id="selectPlanet"></select>
 			</div>
 			<div class="divToggler" onClick="toggle(this.nextSibling);">Overview</div>
 			<div id="Overview" class="tabcontent">
@@ -153,39 +350,39 @@
 			        </tr>
 			        <tr class="inputField">
 			            <td>Mass</td>
-			            <td>
+			            <td class="withUnitOfMeasure">
 			                <input type="number" id="mass" class="measure" name="mass" placeholder="Planet mass" min=0>
-			                <div class="unitOfMeasure"> kg</div>
+			                <a> kg</a>
 			            </td>
 			        </tr>
 			        <tr class="inputField">
 			            <td>Radius</td>
-			            <td>
+			            <td class="withUnitOfMeasure">
 			                <input type="number" id="radius" class="measure" name="radius" placeholder="Planet radius" min=0>
-			                <div class="unitOfMeasure"> km</div>
+			                <a> km</a>
 			            </td>
 			        </tr>
 			        <tr class="inputField">
 			            <td>Denisity</td>
-			            <td>
+			            <td class="withUnitOfMeasure">
 			                <input type="number" id="denisity" class="measure" name="denisity" placeholder="Planet density" min=0>
-			                <div class="unitOfMeasure"> g/cm&#179;</div>
+			                <a> g/cm&#179;</a>
 			            </td>
 			        </tr>
 
 			        <tr class="inputField">
 			            <td>Surface Temperatures</td>
-			            <td>
+			            <td class="withUnitOfMeasure">
 			                <input type="number" id="temperature" class="measure" name="temperature" placeholder="Planet temperature">
-			                <div class="unitOfMeasure">°C</div>
+			                <a>°C</a>
 			            </td>
 			        </tr>
 
-			        <tr>
-			            <td class="inputField">Surface Gravity</td>
-			            <td>
+			        <tr class="inputField">
+			            <td>Surface Gravity</td>
+			            <td class="withUnitOfMeasure">
 			                <input type="number" id="gravity" class="measure" name="gravity" placeholder="Planet gravity" min=0>
-			                <div class="unitOfMeasure"> m/s&#178;</div>
+			                <a> m/s&#178;</a>
 			            </td>
 			        </tr>
 			    </table>
@@ -212,13 +409,13 @@
 	      <table>
 	        <tr class="inputField">
 	          <td>Speed X</td>
-	          <td><input type="number" id="speedX" class="measure" name="speedX" placeholder="Planet speedX"><div class="unitOfMeasure"> km/s</div></td>
+	          <td class="withUnitOfMeasure"><input type="number" id="speedX" class="measure" name="speedX" placeholder="Planet speedX"><a> km/s</a></td>
 	        </tr> <tr class="inputField">
 	          <td>Speed Y</td>
-	          <td><input type="number" id="speedY" class="measure" name="speedY" placeholder="Planet speedY"><div class="unitOfMeasure"> km/s</div></td>
+	          <td class="withUnitOfMeasure"><input type="number" id="speedY" class="measure" name="speedY" placeholder="Planet speedY"><a> km/s</a></td>
 	        </tr> <tr class="inputField">
 	          <td>Speed Z</td>
-	          <td><input type="number" id="speedZ" class="measure" name="speedZ" placeholder="Planet speedZ"><div class="unitOfMeasure"> km/s</div></td>
+	          <td class="withUnitOfMeasure"><input type="number" id="speedZ" class="measure" name="speedZ" placeholder="Planet speedZ"><a> km/s</a></td>
 	        </tr>
 	      </table>
 	    </div>
@@ -229,30 +426,22 @@
       <table>
         <tr>
           <td>Iron </td>
-          <td> - </td>
           <td><input id="ironRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
-          <td> + </td>
-          <td> <p>Value: <span id="ironValue"></span></p></td>
+          <td style="width: 6em;"> <p>Value: <span id="ironValue"></span></p></td>
         </tr>
         <tr>
           <td>Silicate </td>
-          <td> - </td>
           <td><input id = "silicateRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
-          <td> + </td>
           <td> <p>Value: <span id="silicateValue"></span></p></td>
         </tr>
         <tr>
           <td>Water </td>
-          <td> - </td>
           <td><input id = "waterRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
-          <td> + </td>
           <td> <p>Value: <span id="waterValue"></span></p></td>
         </tr>
         <tr>
           <td>Hidrogen </td>
-          <td> - </td>
           <td><input id = "hidrogenRange" type="range" min="0" max="100" step="0.000001" value="25"> </td>
-          <td> + </td>
           <td> <p>Value: <span id="hidrogenValue"></span></p></td>
         </tr>
       </table>
@@ -262,7 +451,7 @@
       <table>
         <tr class="inputField">
           <td>Surface Temperature</td>
-          <td><input type="number" id="temperature" class="measure" name="temperature" placeholder="Planet temperature"><div class="unitOfMeasure"> °C</div></td>
+          <td class="withUnitOfMeasure"><input type="number" id="temperature" class="measure" name="temperature" placeholder="Planet temperature"><a> °C</a></td>
         </tr>
         <tr class="inputField">
           <td>Avarage Albedo</td>
@@ -279,19 +468,15 @@
       <table>
         <tr>
           <td><button class="onCanvas" onclick="deletePlanet()" type="button">Delete this Planet</button>
+		  <td><button class="onCanvas" type="button" disabled>Auto Orbit</button>
         </tr>
         <tr>
-          <td><button class="onCanvas" type="button" disabled>Auto Orbit</button>
-        </tr>
-        <tr>
+		<td><button class="onCanvas" type="button" onclick="unlockCamera()">Unlock Camera</button>
           <td><button class="onCanvas" onclick="speed0Planet()" type="button">Zero Velocity</button>
         </tr> 
 	      <tr>
           <td><button class="onCanvas" id="addPlanetButton" onClick="finalizeCreatePlanet();" type="button">Add planet</button>
           	</tr> 
-          	 <tr>
-          <td><button class="onCanvas" type="button" onclick="unlockCamera()">Unlock Camera</button>
-        </tr>
       </table>
 
     </div>
@@ -306,10 +491,10 @@
 		</div>
 		
 		<script src="3dLib/js/three.js"></script>
-		<script src="3dLib/js/THREE.MeshLine.js"></script>
 		<script src="3dLib/loaders/GLTFLoader.js"></script>
 		<script src="3dLib/controls/OrbitControls.js"></script>
-		<script src="3dLib/controls/DragControls.js"></script>
+		<script src="DragControlsWithCustomPlane.js"></script>
+		<script src="3dLib/controls/TransformControls.js"></script>
 		<script src="objectGenerators.js"></script>
 		<script src="3dInterface.js"></script>
 		<script src="gravityEngine.js"></script>
@@ -322,13 +507,12 @@
 			var earth;
 			var setMode = 0;
 			function onLoad() {
-					document.addEventListener("keyup",function(e){
-						if(e.code=='KeyE'){
-							console.log(e);
-							earth.events.onClick();
-						} else if(e.code == 'Space')
-							gravityFunctions.toggleGravity();
-					});
+				document.addEventListener("keyup",function(e){
+					if(e.code=='KeyE'){
+						earth.events.dblClick();
+					} else if(e.code == 'Space')
+						gravityFunctions.toggleGravity();
+				});
 
 				
 				graphicFunctions = startRendering(document.getElementById("container"), {tailPoints: 10000, showCenterSphere: false});
@@ -358,71 +542,61 @@
 					var unitaAstronomica = 149598262/6378.15/rapportoSurreale;
 					planetSelector.innerHTML = html;
 					gravityFunctions.addObjectFromModel(objectGenerators.sun, 0, 0, 0, 0, 0, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.mercury, 350, 0, 0, 0, 90, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.venus, 500, 0, 0, 0, 80, 0, showInfo);
-					earth = gravityFunctions.addObjectFromModel(objectGenerators.earth, 800, 0, 0, 0, 65, 0, showInfo);
-					//gravityFunctions.addObjectFromModel(objectGenerators.mars, 1000, 0, 0, 0, 60, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.jupiter, 1800, 0, 0, 0, 44, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.saturn, 2500, 0, 0, 0, 37, 0, showInfo);
-					gravityFunctions.addObjectFromModel(objectGenerators.uranus, 3200, 0, 0, 0, 32, 0, showInfo);
-					/*gravityFunctions.addObjectFromModel(objectGenerators.neptune, 4000, 0, 0, 0, 30, 0, showInfo);
-					/*gravityFunctions.addObjectFromModel(objectGenerators.snoteaturn, 1500, 0, 0, 0, 30, 0, showInfo);
-					/*gravityFunctions.addObjectFromModel(objectGenerators.saturn, 1500, 0, 0, 0, 30, 0, showInfo);
-					/*gravityFunctions.addObjectFromModel(objectGenerators.saturn, 1500, 0, 0, 0, 30, 0, showInfo);*/
-
-
+					gravityFunctions.addObjectFromModel(objectGenerators.mercury, 350, 0, 0, 0, 0, 90, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.venus, 500, 0, 0, 0, 0, 80, showInfo);
+					earth = gravityFunctions.addObjectFromModel(objectGenerators.earth, 800, 0, 0, 0, 0, 65, showInfo);
+					//gravityFunctions.addObjectFromModel(objectGenerators.mars, 1000, 0, 0, 0, 0, 60, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.jupiter, 1800, 0, 0, 0, 0, 44, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.saturn, 2500, 0, 0, 0, 0, 37, showInfo);
+					gravityFunctions.addObjectFromModel(objectGenerators.uranus, 3200, 0, 0, 0, 0, 32, showInfo);
 					gravityFunctions.turnOnGravity();
 				});
 
 
 				var outputs = [];
-      var sliders = [];
+				var sliders = [];
 
-      sliders[0] = document.getElementById("ironRange");
-      outputs[0] = document.getElementById("ironValue");
-      outputs[0].innerHTML = sliders[0].value;
+				sliders[0] = document.getElementById("ironRange");
+				outputs[0] = document.getElementById("ironValue");
+				outputs[0].innerHTML = sliders[0].value;
 
-      sliders[1] = document.getElementById("silicateRange");
-      outputs[1] = document.getElementById("silicateValue");
-      outputs[1].innerHTML = sliders[1].value;
+				sliders[1] = document.getElementById("silicateRange");
+				outputs[1] = document.getElementById("silicateValue");
+				outputs[1].innerHTML = sliders[1].value;
 
-      sliders[2] = document.getElementById("waterRange");
-      outputs[2] = document.getElementById("waterValue");
-      outputs[2].innerHTML = sliders[2].value;
+				sliders[2] = document.getElementById("waterRange");
+				outputs[2] = document.getElementById("waterValue");
+				outputs[2].innerHTML = sliders[2].value;
 
-      sliders[3] = document.getElementById("hidrogenRange");
-      outputs[3] = document.getElementById("hidrogenValue");
-      outputs[3].innerHTML = sliders[3].value;
+				sliders[3] = document.getElementById("hidrogenRange");
+				outputs[3] = document.getElementById("hidrogenValue");
+				outputs[3].innerHTML = sliders[3].value;
 
 
 
-      for(var i = 0  ; i < sliders.length; i++ ){
-        sliders[i].oninput = (function(i){ return function(){
-          var oldValue = parseFloat(outputs[i].innerHTML);
-          var difference = parseFloat(sliders[i].value) - oldValue;
-          console.log("difference", difference);
-          var vals = [];
-          fullSum = 0;
-          for(var j = 0; j < sliders.length; j++)
-            if(j != i)
-              fullSum += parseFloat(sliders[j].value);
-          for(var j = 0; j < sliders.length; j++){
-            if(j!=i){
-              var thisDiff = fullSum == 0?difference/3:difference * parseFloat(sliders[j].value) / fullSum;
-              vals[j] = parseFloat(sliders[j].value) - thisDiff;
-            }
-          }
-          console.log(vals);
-          for(var j = 0; j < sliders.length; j++){
-            if(j!=i){
-              sliders[j].value = vals[j];
-            }
-            outputs[j].innerHTML = sliders[j].value.substr(0,4);
-          }
+				for (var i = 0  ; i < sliders.length; i++ )
+					sliders[i].oninput = (function(i) { return function() {
+						var oldValue = parseFloat(outputs[i].innerHTML);
+						var difference = parseFloat(sliders[i].value) - oldValue;
+						var vals = [];
+						fullSum = 0;
+						for (var j = 0; j < sliders.length; j++)
+							if (j != i)
+								fullSum += parseFloat(sliders[j].value);
+							for (var j = 0; j < sliders.length; j++) {
+								if (j!=i) {
+									var thisDiff = fullSum == 0?difference/3:difference * parseFloat(sliders[j].value) / fullSum;
+									vals[j] = parseFloat(sliders[j].value) - thisDiff;
+								}
+							}
+						for(var j = 0; j < sliders.length; j++){
+						if(j!=i){
+						  sliders[j].value = vals[j];
+						}
+						outputs[j].innerHTML = sliders[j].value.substr(0,4);
+						}
 
-        };})(i);
-
-      }
+					};})(i);
 
 				
 			}
@@ -433,7 +607,6 @@
 				var menu = document.getElementById("menu");
 				var container = document.getElementById("container");
 				var selectPlanetMenu = document.getElementById("selectPlanet");
-				console.log(object, menu);
 				container.style.right = "25em";
 				selectPlanet.style.right ="25em"
 				menu.style.display="inline-block";
@@ -518,37 +691,12 @@
 				}
 
 				var type = parseInt(document.getElementById("selectPlanet").value);
-				console.log(type,planets[type]);
 				gravityFunctions.addObjectFromModel(planets[type].objectGenerator,position.x,position.y,position.z,spd.x,spd.y,spd.z,showInfo);
 				document.getElementById("addPlanetButton").style.display="none";
 				document.getElementById("Creator").style.display="none";
 				changeMode();
 
 			}
-
-
-			/*var menuToggled = false;
-			function toggleMenu(){
-				var menu = document.getElementById("menu");
-				console.log("ciao");
-				if(menuToggled){
-					console.log("closeMenu");
-					document.getElementById("container").style.width="100%";
-					menu.style.display="none";
-					menuToggled = false;
-				}else{
-					console.log("openMenu");
-					document.getElementById("container").style.width="70%";
-					menu.style.display="inline-block";
-					menuToggled = true;
-				}
-			}
-			
-			function toggle(obj){
-				console.log(o)
-				if(obj.style.display!="none")obj.style.display="none";
-				else obj.style.display = "block";
-			}*/
 		</script>
 	</body>
 </html>
